@@ -125,7 +125,7 @@ opacity:.95}
 .helm{position:absolute;font-size:52px;top:95px;left:20%}
 .scroll{position:absolute;font-size:47px;bottom:70px;left:48%}
 .horse{position:absolute;font-size:52px;top:145px;right:8%;opacity:.18;z-index:10;pointer-events:auto}
-.search-item{position:absolute;cursor:pointer;z-index:30;pointer-events:auto;touch-action:manipulation;filter:brightness(.42) saturate(.65) drop-shadow(0 0 2px rgba(255,215,130,.15));transition:transform .2s,filter .2s,opacity .2s;z-index:5;opacity:.32}
+.search-item{position:absolute;cursor:pointer;z-index:40;pointer-events:auto;touch-action:manipulation;filter:brightness(.42) saturate(.65) drop-shadow(0 0 2px rgba(255,215,130,.15));transition:transform .2s,filter .2s,opacity .2s;z-index:5;opacity:.32}
 .search-item:hover{transform:scale(1.08);filter:brightness(1.2) drop-shadow(0 0 8px rgba(255,215,130,.65))}
 .search-item.found{opacity:1;filter:brightness(1.25) drop-shadow(0 0 12px rgba(255,215,130,.9));pointer-events:none}
 .search-hint{font-family:Cinzel,serif;font-size:13px;letter-spacing:1px}
@@ -442,6 +442,8 @@ function resetHunt(){
  document.getElementById("huntRound").textContent="TENTATIVO "+huntAttempt;
 }
 const huntScene=document.getElementById("huntScene");
+const huntItems=[...huntScene.querySelectorAll(".search-item")];
+
 function moveFlashlight(e){
  const r=huntScene.getBoundingClientRect();
  const x=Math.max(0,Math.min(r.width,e.clientX-r.left));
@@ -449,27 +451,57 @@ function moveFlashlight(e){
  huntScene.style.setProperty("--mx",x+"px");
  huntScene.style.setProperty("--my",y+"px");
 }
+
+function foundHuntItem(item){
+ if(!item || item.classList.contains("found") || huntLives<=0 || foundItems>=5) return;
+ item.classList.add("found");
+ foundItems++;
+ document.getElementById("found").textContent=foundItems+"/5";
+ document.getElementById("huntFeedback").textContent=
+   foundItems===5 ? "🏰 Occhio infallibile. Hai ricostruito la scena." : "Hai trovato un dettaglio della scena.";
+ beep(240,.06);
+ if(foundItems===5) mark("revo","badgeRevo");
+}
+
+/* Ogni oggetto gestisce direttamente il proprio tocco.
+   È molto più affidabile su Android rispetto a capire il target dal pointerup
+   della scena, soprattutto quando il dito si muove mentre si usa la torcia. */
+huntItems.forEach(item=>{
+ item.addEventListener("pointerdown",e=>{
+   e.preventDefault();
+   e.stopPropagation();
+   moveFlashlight(e);
+   foundHuntItem(item);
+ });
+ item.addEventListener("click",e=>{
+   e.preventDefault();
+   e.stopPropagation();
+   foundHuntItem(item);
+ });
+});
+
 huntScene.addEventListener("pointermove",moveFlashlight);
-huntScene.addEventListener("pointerdown",moveFlashlight);
+huntScene.addEventListener("pointerdown",e=>{
+ if(e.target.closest && e.target.closest(".search-item")) return;
+ moveFlashlight(e);
+});
+
 huntScene.addEventListener("pointerup",e=>{
+ if(e.target.closest && e.target.closest(".search-item")) return;
  if(e.pointerType === "touch") e.preventDefault();
- let target=e.target.closest ? e.target.closest(".search-item") : null;
- if(target && !huntScene.contains(target)) target=null;
- if(target){
-   if(target.classList.contains("found"))return;
-   target.classList.add("found");foundItems++;beep(240,.06);
-   document.getElementById("found").textContent=foundItems+"/5";
-   document.getElementById("huntFeedback").textContent="Hai trovato un dettaglio della scena.";
-   if(foundItems===5){document.getElementById("huntFeedback").textContent="🏰 Occhio infallibile. Hai ricostruito la scena.";mark("revo","badgeRevo")}
-   return;
- }
- if(foundItems<5){
-   huntLives--;document.getElementById("lives").textContent=huntLives;beep(90,.1);
-   document.getElementById("huntFeedback").textContent=huntLives>0?"Niente. Un tentativo sprecato.":"💥 Hai perso la pista. Puoi ricominciare.";
-   if(huntLives<=0){document.getElementById("retryHunt").classList.remove("hidden")}
+ if(foundItems<5 && huntLives>0){
+   huntLives--;
+   document.getElementById("lives").textContent=Math.max(0,huntLives);
+   beep(90,.1);
+   document.getElementById("huntFeedback").textContent=
+     huntLives>0 ? "Niente. Un tentativo sprecato." : "💥 Hai perso la pista. Puoi ricominciare.";
+   if(huntLives<=0) document.getElementById("retryHunt").classList.remove("hidden");
  }
 });
-document.getElementById("retryHunt").addEventListener("click",()=>{huntAttempt++;resetHunt()});
+document.getElementById("retryHunt").addEventListener("click",()=>{
+ huntAttempt++;
+ resetHunt();
+});
 
 /* LARP GAME */
 let hp=3,fame=0,luck=1,larpStage=1,larpAttempt=1;
