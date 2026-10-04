@@ -105,17 +105,29 @@ cursor:pointer;box-shadow:0 0 20px #000;touch-action:manipulation}
 .timerfill{height:100%;width:100%;background:#b98a4b;transform-origin:left;transition:width .08s linear}
 
 /* re-enactment game */
-.scene-hunt{position:relative;height:330px;border:2px solid #79512a;overflow:hidden;
-background:linear-gradient(#6e5b45 0 48%,#3f3a2d 48% 100%)}
+.scene-hunt{position:relative;height:330px;border:2px solid #79512a;overflow:hidden;cursor:crosshair;
+background:
+ radial-gradient(circle at 20% 25%,rgba(110,88,57,.28),transparent 18%),
+ radial-gradient(circle at 78% 62%,rgba(100,82,52,.22),transparent 22%),
+ linear-gradient(#17140f 0 48%,#0c0b09 48% 100%);
+--mx:50%;--my:50%;isolation:isolate}
+/* La stanza è quasi completamente buia: solo il cono della torcia rivela ciò che cerchi. */
+.scene-hunt:after{content:"";position:absolute;inset:0;z-index:20;pointer-events:none;
+background:radial-gradient(circle 78px at var(--mx) var(--my),transparent 0 34px,rgba(4,3,2,.10) 45px,rgba(4,3,2,.72) 64px,rgba(4,3,2,.97) 92px,rgba(4,3,2,.995) 100%);
+transition:background-position .04s linear}
+.scene-hunt:before{content:"";position:absolute;width:34px;height:34px;border-radius:50%;
+left:calc(var(--mx) - 17px);top:calc(var(--my) - 17px);z-index:21;pointer-events:none;
+box-shadow:0 0 28px 10px rgba(255,205,110,.32),0 0 70px 22px rgba(255,177,70,.12);
+opacity:.95}
 .sky-banner{position:absolute;top:12px;left:50%;transform:translateX(-50%);font-size:52px}
 .torch{position:absolute;font-size:48px;bottom:28px;left:8%}
 .shield{position:absolute;font-size:55px;bottom:34px;right:10%}
 .helm{position:absolute;font-size:52px;top:95px;left:20%}
 .scroll{position:absolute;font-size:47px;bottom:70px;left:48%}
-.horse{position:absolute;font-size:52px;top:150px;right:26%}
-.search-item{cursor:pointer;filter:drop-shadow(0 0 3px rgba(255,215,130,.3));transition:.2s}
-.search-item:hover{transform:scale(1.08)}
-.search-item.found{opacity:.18;pointer-events:none}
+.horse{position:absolute;font-size:52px;top:150px;right:26%;opacity:.18}
+.search-item{cursor:pointer;filter:brightness(.42) saturate(.65) drop-shadow(0 0 2px rgba(255,215,130,.15));transition:transform .2s,filter .2s,opacity .2s;z-index:5;opacity:.32}
+.search-item:hover{transform:scale(1.08);filter:brightness(1.2) drop-shadow(0 0 8px rgba(255,215,130,.65))}
+.search-item.found{opacity:1;filter:brightness(1.25) drop-shadow(0 0 12px rgba(255,215,130,.9));pointer-events:none}
 .search-hint{font-family:Cinzel,serif;font-size:13px;letter-spacing:1px}
 
 /* LARP game */
@@ -229,7 +241,7 @@ Altre di terre lontane, creature, battaglie<br>e storie che prendono vita davant
 <div class="game-content">
 <div class="game-top"><span>🏰 TERRE DELLA RIEVOCAZIONE</span><span id="huntRound">TENTATIVO 1</span></div>
 <h2 class="game-title">L'Occhio del Rievocatore</h2>
-<p class="game-sub">Trova i <strong>5 oggetti</strong> nascosti nella scena. Ogni errore costa una vita.</p>
+<p class="game-sub">La stanza è quasi completamente al buio. Usa la torcia per illuminare la scena e trova i <strong>5 dettagli</strong>. Ogni errore costa una vita.</p>
 <div class="hud"><span>Oggetti: <b id="found">0/5</b></span><span>Vite: <b id="lives">3</b></span></div>
 <div class="scene-hunt" id="huntScene">
 <div class="sky-banner search-item" data-find="1">🏳️</div>
@@ -240,7 +252,7 @@ Altre di terre lontane, creature, battaglie<br>e storie che prendono vita davant
 <div class="horse">🐎</div>
 <div class="feedback" id="huntFeedback"></div>
 </div>
-<p class="search-hint">Tocca un oggetto sospetto. Non tutto ciò che vedi è importante.</p>
+<p class="search-hint">🔦 Muovi il dito o il mouse per illuminare. I dettagli sono quasi invisibili nel buio.</p>
 <div class="game-actions"><button class="mini-btn hidden" id="retryHunt">↻ RIPROVA LA RICERCA</button></div>
 </div>
 </section>
@@ -429,7 +441,17 @@ function resetHunt(){
  document.getElementById("retryHunt").classList.add("hidden");
  document.getElementById("huntRound").textContent="TENTATIVO "+huntAttempt;
 }
-document.getElementById("huntScene").addEventListener("click",e=>{
+const huntScene=document.getElementById("huntScene");
+function moveFlashlight(e){
+ const r=huntScene.getBoundingClientRect();
+ const x=Math.max(0,Math.min(r.width,e.clientX-r.left));
+ const y=Math.max(0,Math.min(r.height,e.clientY-r.top));
+ huntScene.style.setProperty("--mx",x+"px");
+ huntScene.style.setProperty("--my",y+"px");
+}
+huntScene.addEventListener("pointermove",moveFlashlight);
+huntScene.addEventListener("pointerdown",moveFlashlight);
+huntScene.addEventListener("click",e=>{
  if(!e.target.classList.contains("scene-hunt") && !e.target.classList.contains("search-item"))return;
  if(e.target.classList.contains("search-item")){
    if(e.target.classList.contains("found"))return;
