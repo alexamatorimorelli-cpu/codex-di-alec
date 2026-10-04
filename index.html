@@ -25,6 +25,10 @@ button{font:inherit;touch-action:manipulation}
 @media(max-width:480px){.page{padding:10px}.codex{max-height:calc(100vh - 28px);max-height:calc(100dvh - 28px);min-height:0;padding:28px 14px}.codex:before{inset:6px}p{font-size:1.04rem}.route{padding:15px}.game{max-height:none;min-height:calc(100vh - 20px);min-height:calc(100dvh - 20px);padding:28px 12px 18px}.game .story{padding:16px 12px}.game .story p{font-size:1.08rem}.choice{padding:15px 13px;font-size:1rem}.btn{min-height:56px;font-size:.82rem}.target{width:82px;height:82px}}
 </style>
 
+</head>
+<body>
+<div id="app"></div>
+<script>
 /* --- CODEX MUSIC: WebAudio medieval moods, no external audio files --- */
 let audioCtx=null, musicTimer=null, musicMode='ambient', musicOn=true, musicStep=0;
 const MUSIC={
@@ -43,10 +47,6 @@ function startMusic(){if(!musicOn)return;ensureAudio();clearInterval(musicTimer)
 function stopMusic(){clearInterval(musicTimer);musicTimer=null}
 function musicSet(mode){musicMode=mode;if(musicOn)startMusic()}
 
-</head>
-<body>
-<div id="app"></div>
-<script>
 (function(){
 'use strict';
 const app=document.getElementById('app');
