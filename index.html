@@ -6,39 +6,125 @@
 <title>Il Codex di Alec</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=IM+Fell+English:ital@0;1&display=swap');
+
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:#0d0a08;color:#ead9b4}
 body{font-family:"IM Fell English",serif;overflow-x:hidden}
-.scene{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px;position:relative;background:radial-gradient(circle at 50% 45%,rgba(170,112,48,.16),transparent 28%),radial-gradient(circle at 50% 100%,rgba(0,0,0,.95),transparent 55%),#0d0a08}
-.candle{position:absolute;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,205,111,.22),rgba(255,154,50,.07) 35%,transparent 70%);filter:blur(5px);animation:flicker 2.5s infinite alternate}
+button{font:inherit}
+
+.scene{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:24px;position:relative;
+  background:radial-gradient(circle at 50% 42%,rgba(170,112,48,.16),transparent 28%),
+             radial-gradient(circle at 50% 100%,rgba(0,0,0,.95),transparent 55%),#0d0a08;
+}
+.candle{
+  position:absolute;width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,205,111,.22),rgba(255,154,50,.07) 35%,transparent 70%);
+  filter:blur(5px);animation:flicker 2.5s infinite alternate;
+}
 @keyframes flicker{from{transform:scale(.95);opacity:.65}to{transform:scale(1.08);opacity:1}}
-.manuscript{position:relative;width:min(900px,94vw);min-height:650px;padding:70px 8%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(ellipse at center,rgba(246,221,166,.96),rgba(191,151,91,.94)),#c8a66b;color:#2d1b0d;border:12px solid #3b2412;box-shadow:0 0 0 3px #8b6334,0 25px 80px #000,inset 0 0 80px rgba(65,32,8,.45);clip-path:polygon(1% 2%,98% 0,99% 97%,2% 100%,0 50%)}
-.manuscript:before{content:"";position:absolute;inset:25px;border:2px solid rgba(77,42,16,.5);pointer-events:none}
-.corner{position:absolute;font-family:Cinzel,serif;font-size:42px;opacity:.55}.tl{top:38px;left:45px}.tr{top:38px;right:45px}.bl{bottom:38px;left:45px}.br{bottom:38px;right:45px}
-.kicker{font-family:Cinzel,serif;letter-spacing:5px;font-size:14px;margin-bottom:22px;text-transform:uppercase}
+
+.manuscript,.page{
+  background:radial-gradient(ellipse at center,rgba(246,221,166,.97),rgba(191,151,91,.95));
+  color:#2d1b0d;border:10px solid #3b2412;
+  box-shadow:0 0 0 3px #8b6334,0 25px 80px #000,inset 0 0 70px rgba(65,32,8,.35);
+}
+.manuscript{
+  position:relative;width:min(900px,94vw);min-height:650px;padding:70px 8%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;clip-path:polygon(1% 2%,98% 0,99% 97%,2% 100%,0 50%);
+}
+.manuscript:before,.page:before{
+  content:"";position:absolute;inset:24px;border:2px solid rgba(77,42,16,.5);pointer-events:none;
+}
+.corner{position:absolute;font-family:Cinzel,serif;font-size:42px;opacity:.55}
+.tl{top:38px;left:45px}.tr{top:38px;right:45px}.bl{bottom:38px;left:45px}.br{bottom:38px;right:45px}
+.kicker{font-family:Cinzel,serif;letter-spacing:5px;font-size:14px;margin-bottom:18px;text-transform:uppercase}
 h1{font-family:Cinzel,serif;font-weight:600;font-size:clamp(34px,7vw,70px);letter-spacing:3px;line-height:1.05;margin:0 0 25px}
-.rule{width:180px;height:1px;background:#5d391b;margin:5px auto 28px}
+.rule{width:180px;height:1px;background:#5d391b;margin:5px auto 25px}
 .intro{font-size:clamp(19px,2.4vw,25px);line-height:1.65;max-width:650px;font-style:italic}.intro strong{font-style:normal}
-.open{margin-top:38px;padding:16px 34px;background:#2d1b0d;color:#f0d9a7;border:1px solid #9c7642;font-family:Cinzel,serif;letter-spacing:2px;cursor:pointer;font-size:15px;transition:.3s;box-shadow:0 5px 15px #0006}
-.open:hover{transform:translateY(-3px);background:#422812;box-shadow:0 9px 25px #0008}
-.codex{display:none;position:fixed;inset:0;z-index:10;background:#100c09;align-items:center;justify-content:center;padding:30px}
-.codex.show{display:flex;animation:appear .6s ease}
+.open,.path-btn,.mini-btn{
+  padding:14px 24px;background:#2d1b0d;color:#f0d9a7;border:1px solid #9c7642;
+  font-family:Cinzel,serif;letter-spacing:1.5px;cursor:pointer;
+  transition:.25s;box-shadow:0 5px 15px #0006;
+}
+.open{margin-top:30px;font-size:15px}.open:hover,.path-btn:hover,.mini-btn:hover{transform:translateY(-2px);background:#4b2d16}
+.codex{display:none;position:fixed;inset:0;z-index:10;background:#100c09eF;align-items:center;justify-content:center;padding:20px;overflow:auto}
+.codex.show{display:flex;animation:appear .45s ease}
 @keyframes appear{from{opacity:0}to{opacity:1}}
-.page{width:min(850px,94vw);height:min(86vh,700px);min-height:0;overflow:auto;background:linear-gradient(135deg,#d9bd83,#f1ddb0 50%,#c7a46a);color:#2d1b0d;padding:65px 9%;position:relative;border:10px solid #39230f;box-shadow:0 25px 100px #000;text-align:center}
-.page h2{font-family:Cinzel,serif;font-size:clamp(26px,5vw,44px);line-height:1.15;margin:0 0 12px}.page p{font-size:19px;line-height:1.5;margin:14px 0}.seal{font-size:50px;margin:4px}
-.close{position:absolute;top:15px;right:20px;border:0;background:none;font-size:28px;color:#3a2412;cursor:pointer}
-.hidden{display:none}
-.next{margin-top:28px}
-.choice{display:grid;gap:12px;max-width:480px;margin:25px auto 0}
-.choice button{padding:14px;background:#3b2412;color:#f0d9a7;border:1px solid #9c7642;font-family:"IM Fell English",serif;font-size:18px;cursor:pointer}
-.choice button:hover{background:#563719}
-.result{margin-top:22px;font-style:italic;min-height:35px}
-.back{background:none;border:0;color:#5b381b;text-decoration:underline;cursor:pointer;font-family:inherit;font-size:16px;margin-top:20px}
-@media(max-width:600px){.manuscript{min-height:580px;padding:55px 10%}.page{height:86vh;padding:42px 8%}.page h2{font-size:28px}.page p{font-size:17px;line-height:1.42;margin:11px 0}.seal{font-size:42px}.kicker{font-size:11px;letter-spacing:3px}.corner{font-size:28px}.tl{left:28px;top:25px}.tr{right:28px;top:25px}.bl{left:28px;bottom:25px}.br{right:28px;bottom:25px}}
+.page{
+  width:min(880px,94vw);min-height:680px;max-height:92vh;overflow:auto;
+  padding:54px 8%;position:relative;text-align:center;
+}
+.page h2{font-family:Cinzel,serif;font-size:clamp(27px,5vw,46px);line-height:1.15;margin:0 0 12px}
+.page p{font-size:19px;line-height:1.5;margin:13px 0}
+.seal{font-size:50px;margin:0 0 4px}
+.close{position:absolute;top:13px;right:18px;border:0;background:none;font-size:28px;color:#3a2412;cursor:pointer;z-index:2}
+.hidden{display:none!important}
+
+.paths{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:28px 0 18px}
+.path-btn{min-height:145px;font-size:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.path-btn .icon{font-size:40px}.path-btn small{font-family:"IM Fell English",serif;letter-spacing:0;font-size:15px}
+.path-result{min-height:54px;font-style:italic;font-size:18px;padding:12px;border-top:1px solid #79512a;border-bottom:1px solid #79512a}
+
+.progress{font-family:Cinzel,serif;font-size:12px;letter-spacing:2px;margin-bottom:20px;opacity:.75}
+.badges{display:flex;justify-content:center;gap:10px;margin:15px 0;flex-wrap:wrap}
+.badge{padding:7px 10px;border:1px solid #79512a;opacity:.35}.badge.found{opacity:1;background:#dcc18b}
+.next-area{margin-top:22px}
+.next-area button{margin:5px}
+
+.interactive{
+  max-width:620px;margin:22px auto;text-align:left;
+}
+.card{
+  border:1px solid #79512a;padding:18px;background:#e6cc96cc;margin:12px 0;
+}
+.card h3{font-family:Cinzel,serif;margin:0 0 10px}
+.dice{
+  width:90px;height:90px;margin:15px auto;display:flex;align-items:center;justify-content:center;
+  border:3px solid #3b2412;background:#d9bb7e;font-family:Cinzel,serif;font-size:30px;
+  cursor:pointer;transform:rotate(0);transition:.3s;
+}
+.dice.roll{animation:roll .5s ease}
+@keyframes roll{0%{transform:rotate(0) scale(1)}50%{transform:rotate(180deg) scale(1.2)}100%{transform:rotate(360deg) scale(1)}}
+
+.sword-area{text-align:center}
+.sword{font-size:95px;cursor:pointer;display:inline-block;transition:.2s;user-select:none}
+.sword:active{transform:rotate(-18deg) scale(1.08)}
+.hit{animation:hit .25s ease}
+@keyframes hit{50%{transform:translateX(18px) rotate(-12deg)}}
+
+.firefly-zone{height:180px;position:relative;overflow:hidden;border:1px solid #79512a;background:#182018;margin:15px 0}
+.firefly{position:absolute;width:15px;height:15px;border-radius:50%;background:#f4d889;box-shadow:0 0 16px #f4d889;cursor:pointer}
+.firefly:nth-child(1){left:12%;top:28%}.firefly:nth-child(2){left:32%;top:62%}.firefly:nth-child(3){left:51%;top:22%}.firefly:nth-child(4){left:72%;top:54%}.firefly:nth-child(5){left:86%;top:28%}
+
+.final{
+  font-size:21px;line-height:1.7;font-style:italic;margin:20px auto;max-width:650px;
+}
+.secret-btn{
+  border:0;background:none;color:#79512a;cursor:pointer;font-size:13px;margin-top:15px;
+}
+.dragon{
+  font-size:75px;display:inline-block;cursor:pointer;transition:.2s;
+}
+.dragon:active{transform:scale(1.2) rotate(4deg)}
+
+@media(max-width:700px){
+  .manuscript{min-height:590px;padding:55px 10%}
+  .corner{font-size:28px}.tl{left:27px;top:25px}.tr{right:27px;top:25px}.bl{left:27px;bottom:25px}.br{right:27px;bottom:25px}
+  .paths{grid-template-columns:1fr}
+  .path-btn{min-height:100px;flex-direction:row;justify-content:flex-start;padding-left:24px}
+  .path-btn .icon{font-size:34px}
+  .page{min-height:0;max-height:92vh;padding:44px 7%}
+  .page h2{font-size:28px}.page p{font-size:17px;line-height:1.42}
+  .seal{font-size:42px}
+}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}}
 </style>
 </head>
-<body>
 
+<body>
 <main class="scene" id="home">
   <div class="candle"></div>
   <section class="manuscript">
@@ -54,66 +140,238 @@ h1{font-family:Cinzel,serif;font-weight:600;font-size:clamp(34px,7vw,70px);lette
       e osa entrare in mondi che altri<br>
       possono soltanto immaginare.
     </p>
-    <button class="open" onclick="showPage(1)">✦ APRI IL CODEX ✦</button>
+    <button class="open" type="button" id="openBtn">✦ APRI IL CODEX ✦</button>
   </section>
 </main>
 
-<section class="codex" id="codex">
-  <article class="page">
+<section class="codex" id="codex" aria-hidden="true">
+<article class="page">
 
-    <div id="page1">
-      <button class="close" onclick="closeCodex()">✕</button>
-      <div class="seal">⚔️</div>
-      <div class="kicker">Foglio I · Le cronache</div>
-      <h2>Le pagine sono incomplete.</h2>
-      <div class="rule"></div>
-      <p>Poco sappiamo della persona che ci troviamo davanti.</p>
-      <p>Le cronache sono frammentarie.<br>
-      Alcune parlano di lame.<br>
-      Altre di terre lontane, creature, battaglie<br>
-      e storie che prendono vita davanti agli occhi.</p>
-      <p><em>Il resto dovrà essere scoperto.</em></p>
-      <button class="open next" onclick="showPage(2)">CONTINUA L'ESPLORAZIONE →</button>
+  <section id="page1">
+    <button class="close" type="button" data-close>✕</button>
+    <div class="seal">⚔️</div>
+    <div class="progress">FOGLIO I · LE CRONACHE</div>
+    <h2>Le pagine sono incomplete.</h2>
+    <div class="rule"></div>
+    <p>Poco sappiamo della persona che ci troviamo davanti.</p>
+    <p>Le cronache sono frammentarie.<br>
+    Alcune parlano di lame.<br>
+    Altre di terre lontane, creature, battaglie<br>
+    e storie che prendono vita davanti agli occhi.</p>
+    <p><em>Il resto dovrà essere scoperto.</em></p>
+    <button class="open" type="button" data-page="2">CONTINUA L'ESPLORAZIONE →</button>
+  </section>
+
+  <section id="page2" class="hidden">
+    <button class="close" type="button" data-close>✕</button>
+    <div class="seal">🗺️</div>
+    <div class="progress">FOGLIO II · LE TRE VIE</div>
+    <h2>Tre vie si aprono davanti a te.</h2>
+    <div class="rule"></div>
+    <p>Il Codex non racconta una storia.<br><em>Ti invita ad entrarci.</em></p>
+
+    <div class="paths">
+      <button class="path-btn" type="button" data-path="sword"><span class="icon">⚔️</span><span>La Sala d'Armi<small>Scegli la tua lama</small></span></button>
+      <button class="path-btn" type="button" data-path="revo"><span class="icon">🏰</span><span>Le Terre della Rievocazione<small>Attraversa il passato</small></span></button>
+      <button class="path-btn" type="button" data-path="larp"><span class="icon">🎭</span><span>Il Portale dei Viventi<small>Entra nel gioco</small></span></button>
     </div>
 
-    <div id="page2" class="hidden">
-      <button class="close" onclick="closeCodex()">✕</button>
-      <div class="seal">🗺️</div>
-      <div class="kicker">Foglio II · Il sentiero</div>
-      <h2>Tre vie si aprono davanti a te.</h2>
-      <div class="rule"></div>
-      <p>Il Codex non racconta una storia.<br>
-      Ti invita ad entrarci.</p>
-      <div class="choice">
-        <button onclick="choose(1)">⚔️ La Sala d'Armi</button>
-        <button onclick="choose(2)">🏰 Le Terre della Rievocazione</button>
-        <button onclick="choose(3)">🎭 Il Portale dei Viventi</button>
+    <div class="path-result" id="pathResult">Scegli una via. Le cronache cambieranno davanti ai tuoi occhi.</div>
+
+    <div class="badges">
+      <span class="badge" id="badgeSword">⚔️ Lama</span>
+      <span class="badge" id="badgeRevo">🏰 Memoria</span>
+      <span class="badge" id="badgeLarp">🎭 Avventura</span>
+    </div>
+
+    <div class="next-area">
+      <button class="mini-btn hidden" type="button" id="goPage3">APRIRE IL FOGLIO III →</button>
+    </div>
+  </section>
+
+  <section id="page3" class="hidden">
+    <button class="close" type="button" data-close>✕</button>
+    <div class="seal">📜</div>
+    <div class="progress">FOGLIO III · LE PROVE</div>
+    <h2>Il Codex ti mette alla prova.</h2>
+    <div class="rule"></div>
+    <p>Tre prove. Nessuna risposta perfetta. Solo lama, fortuna e caos.</p>
+
+    <div class="interactive" id="challenge">
+      <div class="card" id="challengeCard">
+        <h3>⚔️ Prova della Lama</h3>
+        <p>Clicca la spada <strong>tre volte</strong> prima che il guerriero del Codex perda la pazienza.</p>
+        <div class="sword" id="sword">⚔️</div>
+        <p id="swordText">Colpi: 0 / 3</p>
       </div>
-      <p class="result" id="result"></p>
-      <button class="back" onclick="showPage(1)">← Torna al foglio precedente</button>
+
+      <div class="card">
+        <h3>🎲 Prova del Destino</h3>
+        <p>Un D20 decide il destino. Cliccalo.</p>
+        <div class="dice" id="dice">20</div>
+        <p id="diceText">Il dado è ancora fermo. Sospetto.</p>
+      </div>
+
+      <div class="card">
+        <h3>🎭 Prova dell'Avventuriero</h3>
+        <p id="larpScenario">La porta della taverna si spalanca. L'oste ti accusa di aver rubato una moneta. Cosa fai?</p>
+        <div class="choice" id="larpChoices">
+          <button class="mini-btn" type="button" data-answer="talk">🗣️ Provo a convincerlo con le buone.</button>
+          <button class="mini-btn" type="button" data-answer="lie">🎭 Invento una storia completamente assurda.</button>
+          <button class="mini-btn" type="button" data-answer="fight">⚔️ Sfido l'oste a duello.</button>
+        </div>
+        <p class="result" id="larpResult"></p>
+      </div>
     </div>
 
-  </article>
+    <button class="open hidden" type="button" id="finalBtn">✦ HAI SUPERATO LE PROVE ✦</button>
+  </section>
+
+  <section id="page4" class="hidden">
+    <button class="close" type="button" data-close>✕</button>
+    <div class="seal">🐉</div>
+    <div class="progress">FOGLIO IV · IL SEGRETO</div>
+    <h2>Hai trovato qualcosa che non dovevi trovare.</h2>
+    <div class="rule"></div>
+    <p>Le cronache si interrompono.</p>
+    <p>Una creatura compare nel margine della pagina.</p>
+    <div class="dragon" id="dragon" title="Non cliccare il drago">🐉</div>
+    <p><em>Forse è meglio non toccarlo.</em></p>
+    <button class="secret-btn" type="button" id="secretBtn">[ Non c'è assolutamente niente qui. ]</button>
+    <div id="secretResult" class="final"></div>
+    <div id="ending" class="hidden">
+      <p class="final">
+        Le cronache su Alec rimangono incomplete.<br><br>
+        Ma forse è proprio questo il punto.<br>
+        Alcune storie non sono scritte per essere lette.<br>
+        <strong>Sono scritte per essere vissute.</strong>
+      </p>
+      <p>— Fine del primo capitolo —</p>
+    </div>
+  </section>
+
+</article>
 </section>
 
 <script>
-function showPage(n){
-  document.getElementById("codex").classList.add("show");
-  document.getElementById("page1").classList.toggle("hidden", n !== 1);
-  document.getElementById("page2").classList.toggle("hidden", n !== 2);
-  window.scrollTo(0,0);
-}
-function closeCodex(){
-  document.getElementById("codex").classList.remove("show");
-}
-function choose(n){
-  const text = {
-    1:"⚔️ La via della lama. Il ferro attende. E forse anche qualche tiro di dado.",
-    2:"🏰 La via del passato. Costumi, oggetti e persone che per un giorno hanno fatto rivivere un altro tempo.",
-    3:"🎭 La via del LARP. Qui non si assiste alla storia: si diventa parte della storia."
+(() => {
+  const codex = document.getElementById("codex");
+  const pages = [1,2,3,4].map(n => document.getElementById("page"+n));
+  const badges = {
+    sword: document.getElementById("badgeSword"),
+    revo: document.getElementById("badgeRevo"),
+    larp: document.getElementById("badgeLarp")
   };
-  document.getElementById("result").textContent=text[n];
-}
+  const found = new Set();
+
+  function showPage(n){
+    pages.forEach((page,i)=>page.classList.toggle("hidden", i !== n-1));
+    codex.classList.add("show");
+    codex.setAttribute("aria-hidden","false");
+  }
+  function close(){
+    codex.classList.remove("show");
+    codex.setAttribute("aria-hidden","true");
+  }
+
+  document.getElementById("openBtn").addEventListener("click",()=>showPage(1));
+  document.querySelectorAll("[data-close]").forEach(btn=>btn.addEventListener("click",close));
+  document.querySelectorAll("[data-page]").forEach(btn=>btn.addEventListener("click",()=>showPage(Number(btn.dataset.page))));
+
+  const pathResult = document.getElementById("pathResult");
+  document.querySelectorAll("[data-path]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const type = btn.dataset.path;
+      found.add(type);
+      badges[type].classList.add("found");
+
+      const messages = {
+        sword:"⚔️ Il ferro canta. Hai trovato la via della Lama. Ma il Codex vuole sapere se sai usarla…",
+        revo:"🏰 Il tempo si piega. Costumi, accessori e storia prendono vita. La via della Memoria è stata trovata.",
+        larp:"🎭 Il sipario cade. Non sei più spettatore: sei dentro la storia. La via dell'Avventura è stata trovata."
+      };
+      pathResult.textContent = messages[type];
+
+      if(found.size === 3){
+        document.getElementById("goPage3").classList.remove("hidden");
+        pathResult.textContent = "Hai percorso tutte e tre le vie. Il Codex ha qualcosa in serbo per te.";
+      }
+    });
+  });
+
+  document.getElementById("goPage3").addEventListener("click",()=>showPage(3));
+
+  let swordHits=0;
+  const sword=document.getElementById("sword");
+  sword.addEventListener("click",()=>{
+    swordHits++;
+    sword.classList.remove("hit"); void sword.offsetWidth; sword.classList.add("hit");
+    const text=document.getElementById("swordText");
+    text.textContent = swordHits < 3 ? `Colpi: ${swordHits} / 3` : "Colpi: 3 / 3 — Il guerriero è moderatamente impressionato.";
+    if(swordHits>=3) checkChallenges();
+  });
+
+  document.getElementById("dice").addEventListener("click",function(){
+    this.classList.remove("roll"); void this.offsetWidth; this.classList.add("roll");
+    const roll=Math.floor(Math.random()*20)+1;
+    this.textContent=roll;
+    const reactions = roll===20 ? "CRITICO! Il Codex ti guarda con sospetto." :
+      roll===1 ? "Fallimento critico. Non chiedere cosa è successo." :
+      `Hai tirato ${roll}. Il destino, per ora, non ti ha denunciato.`;
+    document.getElementById("diceText").textContent=reactions;
+  });
+
+  let larpDone=false;
+  document.querySelectorAll("[data-answer]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      if(larpDone) return;
+      const result=document.getElementById("larpResult");
+      const scenario=document.getElementById("larpScenario");
+      const choices=document.getElementById("larpChoices");
+
+      const answers={
+        talk:"L'oste ti ascolta. Non è convinto, ma apprezza il tentativo. +2 Diplomazia.",
+        lie:"Racconti una storia così assurda che l'oste dimentica perfino la moneta. +5 Caos.",
+        fight:"Hai scelto il duello. L'oste guarda la tua spada, poi guarda te. «...Sei sicurə?»"
+      };
+      result.textContent=answers[btn.dataset.answer];
+      scenario.textContent="La prima prova LARP è stata superata. Il Codex prende nota.";
+      choices.querySelectorAll("button").forEach(b=>b.disabled=true);
+      larpDone=true;
+      checkChallenges();
+    });
+  });
+
+  function checkChallenges(){
+    if(swordHits>=3 && larpDone) document.getElementById("finalBtn").classList.remove("hidden");
+  }
+  document.getElementById("finalBtn").addEventListener("click",()=>showPage(4));
+
+  const secretResult=document.getElementById("secretResult");
+  let farted=false;
+  function dragonFart(){
+    if(farted) return;
+    farted=true;
+    secretResult.innerHTML="<strong>💨 SEI APPENA STATO COLPITO DA UNA PUZZETTA DI DRAGO.</strong><br><br>-5 Carisma<br>+10 danni olfattivi<br><em>Effetto: disgustato per 3 turni.</em><br><br>🐉 «SCUSA.»";
+    try{
+      const C=window.AudioContext||window.webkitAudioContext;
+      if(C){
+        const ctx=new C(), osc=ctx.createOscillator(), gain=ctx.createGain();
+        osc.type="sawtooth"; osc.frequency.setValueAtTime(110,ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(42,ctx.currentTime+.65);
+        gain.gain.setValueAtTime(.0001,ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(.28,ctx.currentTime+.05);
+        gain.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.7);
+        osc.connect(gain);gain.connect(ctx.destination);osc.start();osc.stop(ctx.currentTime+.72);
+      }
+    }catch(e){}
+    document.getElementById("ending").classList.remove("hidden");
+  }
+  document.getElementById("dragon").addEventListener("click",dragonFart);
+  document.getElementById("secretBtn").addEventListener("click",dragonFart);
+
+  codex.addEventListener("click",e=>{ if(e.target===codex) close(); });
+})();
 </script>
 </body>
 </html>
