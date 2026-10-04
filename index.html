@@ -30,7 +30,7 @@ button{font:inherit;touch-action:manipulation}
 <div id="app"></div>
 <script>
 /* --- CODEX MUSIC: WebAudio medieval moods, no external audio files --- */
-let audioCtx=null, musicTimer=null, musicMode='ambient', musicOn=true, musicStep=0;
+let audioCtx=null, musicTimer=null, musicMode='ambient', musicOn=true, musicStep=0, activeTones=new Set();
 const MUSIC={
  ambient:{tempo:92, notes:[220,247,277,330,370,440,494,554], bass:[110,123,138,165]},
  story:{tempo:82, notes:[196,220,247,294,330,392,440,494], bass:[98,110,123,147]},
@@ -42,9 +42,9 @@ const MUSIC={
 function musicUI(){return '<button class="music-toggle" id="musicToggle" type="button" aria-label="Attiva o disattiva musica">♫ MUSICA</button>'}
 function bindMusicUI(){const b=document.getElementById('musicToggle');if(!b)return;b.textContent=musicOn?'♫ MUSICA ON':'♫ MUSICA OFF';b.onclick=e=>{e.stopPropagation();if(musicOn && audioCtx && audioCtx.state==='suspended'){audioCtx.resume();startMusic();return;}musicOn=!musicOn;if(musicOn){startMusic();}else stopMusic();b.textContent=musicOn?'♫ MUSICA ON':'♫ MUSICA OFF';};}
 function ensureAudio(){if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume();}
-function tone(freq,dur,when,type='triangle',gain=.28){if(!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(gain,when+.025);g.gain.exponentialRampToValueAtTime(.0001,when+dur);o.connect(g).connect(audioCtx.destination);o.start(when);o.stop(when+dur+.03)}
-function startMusic(){if(!musicOn)return;ensureAudio();clearInterval(musicTimer);musicStep=0;const play=()=>{if(!audioCtx||!musicOn)return;const m=MUSIC[musicMode]||MUSIC.ambient;const beat=60/m.tempo;const now=audioCtx.currentTime+.03;const n=m.notes[musicStep%m.notes.length];tone(n,.34,now,'triangle',musicMode==='battle'?.34:.24);if(musicStep%4===0)tone(m.bass[(musicStep/4)%m.bass.length],.72,now,'sine',.16);if(musicMode==='battle' && musicStep%2===0)tone(m.notes[(musicStep+2)%m.notes.length]/2,.18,now,'square',.13);if(musicMode==='oracle' && musicStep%4===1)tone(m.notes[(musicStep+4)%m.notes.length]*2,.55,now+.08,'sine',.11);musicStep++;};play();const beat=60/(MUSIC[musicMode]||MUSIC.ambient).tempo;musicTimer=setInterval(play,beat*1000)}
-function stopMusic(){clearInterval(musicTimer);musicTimer=null}
+function tone(freq,dur,when,type='triangle',gain=.28){if(!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();activeTones.add(o);o.onended=()=>{activeTones.delete(o);try{o.disconnect();g.disconnect()}catch(e){}};o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(gain,when+.025);g.gain.exponentialRampToValueAtTime(.0001,when+dur);o.connect(g).connect(audioCtx.destination);o.start(when);o.stop(when+dur+.03)}
+function startMusic(){if(!musicOn)return;ensureAudio();clearInterval(musicTimer);musicTimer=null;activeTones.forEach(o=>{try{o.stop();o.disconnect()}catch(e){}});activeTones.clear();musicStep=0;const play=()=>{if(!audioCtx||!musicOn)return;const m=MUSIC[musicMode]||MUSIC.ambient;const beat=60/m.tempo;const now=audioCtx.currentTime+.03;const n=m.notes[musicStep%m.notes.length];tone(n,.34,now,'triangle',musicMode==='battle'?.34:.24);if(musicStep%4===0)tone(m.bass[(musicStep/4)%m.bass.length],.72,now,'sine',.16);if(musicMode==='battle' && musicStep%2===0)tone(m.notes[(musicStep+2)%m.notes.length]/2,.18,now,'square',.13);if(musicMode==='oracle' && musicStep%4===1)tone(m.notes[(musicStep+4)%m.notes.length]*2,.55,now+.08,'sine',.11);musicStep++;};play();const beat=60/(MUSIC[musicMode]||MUSIC.ambient).tempo;musicTimer=setInterval(play,beat*1000)}
+function stopMusic(){clearInterval(musicTimer);musicTimer=null;activeTones.forEach(o=>{try{o.stop();o.disconnect()}catch(e){}});activeTones.clear()}
 function musicSet(mode){musicMode=mode;if(musicOn)startMusic()}
 
 (function(){
