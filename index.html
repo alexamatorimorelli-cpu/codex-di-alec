@@ -7,277 +7,320 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=IM+Fell+English:ital@0;1&display=swap');
 
+:root{
+  --ink:#2d1b0d;--gold:#b98a4b;--paper:#ead3a0;--dark:#120d09;
+}
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:#0d0a08;color:#ead9b4}
+html,body{margin:0;min-height:100%;background:#0b0907;color:var(--paper)}
 body{font-family:"IM Fell English",serif;overflow-x:hidden}
 button{font:inherit}
+button:disabled{opacity:.45;cursor:not-allowed}
+
 .scene{
   min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;
-  position:relative;background:radial-gradient(circle at 50% 42%,rgba(170,112,48,.16),transparent 28%),#0d0a08
+  background:radial-gradient(circle at 50% 40%,rgba(180,125,52,.18),transparent 30%),#0d0a08;
 }
-.candle{position:absolute;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,205,111,.22),rgba(255,154,50,.07) 35%,transparent 70%);filter:blur(5px);animation:flicker 2.5s infinite alternate}
+.candle{position:absolute;width:200px;height:200px;border-radius:50%;
+background:radial-gradient(circle,rgba(255,205,111,.2),rgba(255,154,50,.06) 35%,transparent 70%);
+filter:blur(5px);animation:flicker 2.5s infinite alternate}
 @keyframes flicker{from{transform:scale(.95);opacity:.65}to{transform:scale(1.08);opacity:1}}
 
 .manuscript,.page{
-  background:radial-gradient(ellipse at center,rgba(246,221,166,.97),rgba(191,151,91,.95));
-  color:#2d1b0d;border:9px solid #3b2412;
-  box-shadow:0 0 0 3px #8b6334,0 25px 80px #000,inset 0 0 70px rgba(65,32,8,.35)
+background:radial-gradient(ellipse at center,rgba(246,221,166,.98),rgba(188,147,86,.96));
+color:var(--ink);border:9px solid #3b2412;
+box-shadow:0 0 0 3px #8b6334,0 25px 80px #000,inset 0 0 70px rgba(65,32,8,.35)
 }
-.manuscript{
-  position:relative;width:min(900px,94vw);min-height:650px;padding:70px 8%;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
-  clip-path:polygon(1% 2%,98% 0,99% 97%,2% 100%,0 50%)
-}
+.manuscript{position:relative;width:min(900px,94vw);min-height:650px;padding:70px 8%;
+display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+clip-path:polygon(1% 2%,98% 0,99% 97%,2% 100%,0 50%)}
 .manuscript:before,.page:before{content:"";position:absolute;inset:22px;border:2px solid rgba(77,42,16,.5);pointer-events:none}
 .corner{position:absolute;font-family:Cinzel,serif;font-size:42px;opacity:.55}
 .tl{top:38px;left:45px}.tr{top:38px;right:45px}.bl{bottom:38px;left:45px}.br{bottom:38px;right:45px}
 .kicker{font-family:Cinzel,serif;letter-spacing:4px;font-size:13px;margin-bottom:16px;text-transform:uppercase}
 h1{font-family:Cinzel,serif;font-weight:600;font-size:clamp(34px,7vw,70px);letter-spacing:3px;line-height:1.05;margin:0 0 24px}
 .rule{width:180px;height:1px;background:#5d391b;margin:5px auto 22px}
-.intro{font-size:clamp(19px,2.4vw,25px);line-height:1.65;max-width:650px;font-style:italic}.intro strong{font-style:normal}
+.intro{font-size:clamp(19px,2.4vw,25px);line-height:1.65;max-width:650px;font-style:italic}
+.intro strong{font-style:normal}
 
-.open,.path-btn,.mini-btn{
-  padding:13px 20px;background:#2d1b0d;color:#f0d9a7;border:1px solid #9c7642;
-  font-family:Cinzel,serif;letter-spacing:1px;cursor:pointer;transition:.22s;
-  box-shadow:0 5px 15px #0006
+.open,.mini-btn,.choice-btn{
+padding:13px 20px;background:#2d1b0d;color:#f0d9a7;border:1px solid #9c7642;
+font-family:Cinzel,serif;letter-spacing:1px;cursor:pointer;transition:.2s;box-shadow:0 5px 15px #0006
 }
-.open{margin-top:26px;font-size:14px}.open:hover,.path-btn:hover,.mini-btn:hover{transform:translateY(-2px);background:#4b2d16}
-button:disabled{opacity:.45;cursor:not-allowed;transform:none!important}
+.open{margin-top:26px;font-size:14px}
+.open:hover,.mini-btn:hover,.choice-btn:hover{transform:translateY(-2px);background:#4b2d16}
 
-.codex{
-  display:none;position:fixed;inset:0;z-index:10;background:#100c09ee;
-  align-items:center;justify-content:center;padding:16px;overflow:hidden
-}
-.codex.show{display:flex;animation:appear .35s ease}
+.codex{display:none;position:fixed;inset:0;z-index:10;background:#090705f5;
+align-items:center;justify-content:center;padding:14px;overflow:hidden}
+.codex.show{display:flex;animation:appear .3s ease}
 @keyframes appear{from{opacity:0}to{opacity:1}}
 
-.page{
-  width:min(820px,94vw);max-height:calc(100vh - 32px);overflow:auto;
-  padding:46px 7%;position:relative;text-align:center
-}
+.page{width:min(820px,94vw);max-height:calc(100vh - 28px);overflow:auto;
+padding:45px 7%;position:relative;text-align:center}
 .page h2{font-family:Cinzel,serif;font-size:clamp(26px,5vw,44px);line-height:1.12;margin:0 0 10px}
 .page p{font-size:18px;line-height:1.48;margin:11px 0}
-.seal{font-size:46px;margin:0 0 3px}
-.close{position:absolute;top:9px;right:14px;border:0;background:none;font-size:27px;color:#3a2412;cursor:pointer;z-index:3}
+.seal{font-size:45px;margin:0 0 3px}
+.close{position:absolute;top:8px;right:13px;border:0;background:none;font-size:27px;color:#3a2412;cursor:pointer;z-index:5}
 .hidden{display:none!important}
-.back-map{margin-top:20px;background:transparent;color:#5d391b;border:0;text-decoration:underline;cursor:pointer;font-family:inherit;font-size:16px}
+.back{margin-top:18px;background:transparent;color:#5d391b;border:0;text-decoration:underline;cursor:pointer;font-family:inherit}
 
 .paths{display:grid;grid-template-columns:1fr;gap:10px;margin:22px auto 16px;max-width:650px}
-.path-btn{
-  width:100%;min-height:82px;display:grid;grid-template-columns:62px minmax(0,1fr);
-  align-items:center;text-align:left;gap:10px;padding:10px 18px
-}
-.path-btn .icon{font-size:38px;text-align:center}
-.path-title{font-family:Cinzel,serif;font-size:17px;letter-spacing:1px;display:block}
-.path-sub{display:block;font-family:"IM Fell English",serif;font-size:15px;margin-top:4px;letter-spacing:0}
-.path-result{min-height:42px;font-style:italic;font-size:17px;padding:9px 12px;border-top:1px solid #79512a;border-bottom:1px solid #79512a;max-width:650px;margin:auto}
+.path-btn{width:100%;min-height:76px;display:grid;grid-template-columns:55px minmax(0,1fr);
+align-items:center;text-align:left;gap:10px;padding:9px 15px;background:#2d1b0d;color:#f0d9a7;
+border:1px solid #9c7642;cursor:pointer}
+.path-btn .icon{font-size:32px;text-align:center}.d20-mini{width:48px;height:48px;display:block}.d20-mini svg{width:100%;height:100%}.d20-mini .d20-number{font-size:20px}
+.path-title{font-family:Cinzel,serif;font-size:16px;letter-spacing:1px;display:block}
+.path-sub{display:block;font-size:14px;margin-top:3px}
+.path-result{min-height:38px;font-style:italic;font-size:16px;padding:8px 12px;border-top:1px solid #79512a;border-bottom:1px solid #79512a}
 .badges{display:flex;justify-content:center;gap:8px;margin:12px 0;flex-wrap:wrap}
 .badge{padding:6px 10px;border:1px solid #79512a;opacity:.35;font-size:14px}.badge.found{opacity:1;background:#dcc18b}
 
-.room-box{max-width:620px;margin:20px auto}
-.room-box h3{font-family:Cinzel,serif;font-size:22px;margin:12px 0}
-.parchment-card{border:1px solid #79512a;background:#e6cc96aa;padding:16px;margin:12px 0}
-.choice-grid{display:grid;gap:9px;margin:14px auto;max-width:520px}
-.choice-grid .mini-btn{width:100%;text-align:left}
-.status{min-height:38px;font-style:italic;margin:12px 0}
-.sword-big{font-size:92px;display:inline-block;cursor:pointer;user-select:none;transition:.2s}
-.sword-big:active{transform:rotate(-18deg) scale(1.08)}
-@keyframes slash{50%{transform:translateX(20px) rotate(-14deg)}}
-.slash{animation:slash .25s ease}
+/* FULL-SCREEN GAMES */
+.game-page{
+width:calc(100vw - 28px);height:calc(100vh - 28px);max-width:none;max-height:none;
+padding:34px clamp(18px,5vw,70px);overflow:auto;
+display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.game-page:before{inset:16px}
+.game-top{width:min(900px,100%);display:flex;justify-content:space-between;align-items:center;
+font-family:Cinzel,serif;font-size:12px;letter-spacing:2px;margin-bottom:10px}
+.game-content{width:min(900px,100%);position:relative}
+.game-title{font-family:Cinzel,serif;font-size:clamp(25px,5vw,48px);margin:0 0 8px}
+.game-sub{font-size:18px;margin:0 0 16px}
+.hud{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;font-family:Cinzel,serif;font-size:14px;margin:10px 0}
+.hud span{border:1px solid #79512a;padding:7px 12px;background:#ead3a044}
+.feedback{min-height:42px;font-size:18px;font-style:italic;margin:12px 0;text-align:center}
+.game-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:12px}
 
-.relics{display:flex;justify-content:center;gap:18px;margin:18px 0;flex-wrap:wrap}
-.relic{font-size:45px;cursor:pointer;opacity:.55;transition:.2s}.relic.found{opacity:1;transform:scale(1.1)}
-.scene-box{border:2px solid #79512a;background:linear-gradient(#223025,#182019);color:#e9d5aa;padding:18px;margin:15px 0;position:relative;min-height:190px}
-.scene-box .label{font-family:Cinzel,serif;letter-spacing:2px}
-.fire{font-size:44px;cursor:pointer;position:absolute;bottom:22px;left:18%}
-.banner{font-size:38px;cursor:pointer;position:absolute;top:24px;right:18%}
-.chest{font-size:42px;cursor:pointer;position:absolute;bottom:25px;right:18%}
+/* sword game */
+.duel-arena{height:290px;position:relative;overflow:hidden;border:2px solid #79512a;
+background:linear-gradient(#18130e,#342312);margin:10px 0}
+.duel-arena:before{content:"";position:absolute;left:0;right:0;bottom:38px;height:2px;background:#8e6b3e}
+.target{position:absolute;width:66px;height:66px;border-radius:50%;border:5px solid #c9a86c;
+background:#7c241c;display:flex;align-items:center;justify-content:center;font-size:25px;
+cursor:pointer;box-shadow:0 0 20px #000;touch-action:manipulation}
+.target:after{content:"";width:22px;height:22px;border-radius:50%;background:#d9bd83;border:2px solid #3a1d0d}
+.sword-guard{position:absolute;bottom:42px;left:50%;transform:translateX(-50%);font-size:70px;opacity:.7}
+.timerbar{height:8px;background:#3b2412;margin:8px 0;overflow:hidden}
+.timerfill{height:100%;width:100%;background:#b98a4b;transform-origin:left;transition:width .08s linear}
 
-.dice{width:82px;height:82px;margin:15px auto;display:flex;align-items:center;justify-content:center;border:3px solid #3b2412;background:#d9bb7e;font-family:Cinzel,serif;font-size:28px;cursor:pointer}
-.roll{animation:roll .45s ease}@keyframes roll{0%{transform:rotate(0) scale(1)}50%{transform:rotate(180deg) scale(1.2)}100%{transform:rotate(360deg) scale(1)}}
+/* re-enactment game */
+.scene-hunt{position:relative;height:330px;border:2px solid #79512a;overflow:hidden;
+background:linear-gradient(#6e5b45 0 48%,#3f3a2d 48% 100%)}
+.sky-banner{position:absolute;top:12px;left:50%;transform:translateX(-50%);font-size:52px}
+.torch{position:absolute;font-size:48px;bottom:28px;left:8%}
+.shield{position:absolute;font-size:55px;bottom:34px;right:10%}
+.helm{position:absolute;font-size:52px;top:95px;left:20%}
+.scroll{position:absolute;font-size:47px;bottom:70px;left:48%}
+.horse{position:absolute;font-size:52px;top:150px;right:26%}
+.search-item{cursor:pointer;filter:drop-shadow(0 0 3px rgba(255,215,130,.3));transition:.2s}
+.search-item:hover{transform:scale(1.08)}
+.search-item.found{opacity:.18;pointer-events:none}
+.search-hint{font-family:Cinzel,serif;font-size:13px;letter-spacing:1px}
 
-.final{font-size:20px;line-height:1.65;font-style:italic;max-width:650px;margin:20px auto}
-.dragon{font-size:78px;display:inline-block;cursor:pointer;transition:.2s}.dragon:active{transform:scale(1.2) rotate(4deg)}
-.secret-btn{border:0;background:none;color:#79512a;cursor:pointer;font-size:13px;margin-top:10px}
+/* LARP game */
+.larp-board{border:2px solid #79512a;background:#17130e;padding:18px;min-height:300px}
+.quest-map{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+.node{min-height:75px;background:#2d1b0d;color:#ead9b4;border:1px solid #8c6738;
+display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;padding:8px}
+.node.locked{opacity:.35;cursor:not-allowed}.node.current{outline:3px solid #b98a4b}
+.quest-text{min-height:60px;font-size:19px}
+.choice-grid{display:grid;gap:8px;max-width:650px;margin:12px auto}
+.choice-btn{text-align:left;width:100%}
+
+/* d20 */
+.d20-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;margin:12px auto}
+.d20{
+width:145px;height:145px;position:relative;cursor:pointer;user-select:none;filter:drop-shadow(0 12px 10px #0007);
+transition:transform .15s
+}
+.d20 svg{width:100%;height:100%;overflow:visible}
+.d20:hover{transform:scale(1.04)}.d20.roll{animation:d20roll .65s ease}
+@keyframes d20roll{0%{transform:rotate(0) scale(1)}40%{transform:rotate(170deg) scale(1.2)}70%{transform:rotate(300deg) scale(.92)}100%{transform:rotate(360deg) scale(1)}}
+.d20-mini svg.roll{animation:d20roll .65s ease}
+.d20-number{font-family:Cinzel,serif;font-weight:700;font-size:25px;fill:#f0d9a7;pointer-events:none}
+.d20-face{fill:#5a3a20;stroke:#c59a5c;stroke-width:3}
+.d20-inner{fill:#8b6334;stroke:#3b2412;stroke-width:2}
+
+/* final */
+.final-seal{font-size:72px;margin:10px}
+.final-text{font-size:21px;line-height:1.65;font-style:italic;max-width:680px;margin:18px auto}
+.dragon{font-size:82px;display:inline-block;cursor:pointer}.dragon:active{transform:scale(1.2) rotate(4deg)}
+.secret-btn{border:0;background:none;color:#79512a;cursor:pointer;font-size:13px;margin-top:8px}
+.secret-result{min-height:80px;font-size:20px;line-height:1.55;font-style:italic}
 
 @media(max-width:600px){
-  .manuscript{min-height:590px;padding:55px 10%}
-  .corner{font-size:28px}.tl{left:27px;top:25px}.tr{right:27px;top:25px}.bl{left:27px;bottom:25px}.br{right:27px;bottom:25px}
-  .page{padding:40px 7%;max-height:calc(100vh - 24px)}
-  .page h2{font-size:28px}.page p{font-size:17px;line-height:1.42}.seal{font-size:40px}
-  .path-btn{min-height:76px;grid-template-columns:52px minmax(0,1fr);padding:9px 13px}
-  .path-btn .icon{font-size:31px}.path-title{font-size:15px}.path-sub{font-size:14px}
-  .room-box{margin:15px auto}.sword-big{font-size:78px}
+.manuscript{min-height:590px;padding:55px 10%}.corner{font-size:28px}
+.tl{left:27px;top:25px}.tr{right:27px;top:25px}.bl{left:27px;bottom:25px}.br{right:27px;bottom:25px}
+.page{padding:38px 6%;max-height:calc(100vh - 20px)}
+.page h2{font-size:28px}.page p{font-size:17px;line-height:1.42}.seal{font-size:40px}
+.game-page{padding:30px 20px}.game-page:before{inset:10px}
+.duel-arena{height:250px}.target{width:58px;height:58px}.sword-guard{font-size:58px}
+.scene-hunt{height:285px}.quest-map{grid-template-columns:1fr 1fr}.node{min-height:62px}
+.d20{width:125px;height:125px}
 }
-@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition:none!important}}
 </style>
 </head>
-<body>
 
+<body>
 <main class="scene" id="home">
-  <div class="candle"></div>
-  <section class="manuscript">
-    <div class="corner tl">✠</div><div class="corner tr">☩</div>
-    <div class="corner bl">☩</div><div class="corner br">✠</div>
-    <div class="kicker">Codice delle Cronache Perdute</div>
-    <h1>Il Codex<br>di Alec</h1>
-    <div class="rule"></div>
-    <p class="intro">Qui comincia la cronaca di <strong>Alec</strong>,<br>
-      persona che attraversa i secoli,<br>impugna lame forgiate nel passato<br>
-      e osa entrare in mondi che altri<br>possono soltanto immaginare.</p>
-    <button class="open" type="button" id="openBtn">✦ APRI IL CODEX ✦</button>
-  </section>
+<div class="candle"></div>
+<section class="manuscript">
+<div class="corner tl">✠</div><div class="corner tr">☩</div><div class="corner bl">☩</div><div class="corner br">✠</div>
+<div class="kicker">Codice delle Cronache Perdute</div>
+<h1>Il Codex<br>di Alec</h1><div class="rule"></div>
+<p class="intro">Qui comincia la cronaca di <strong>Alec</strong>,<br>
+persona che attraversa i secoli,<br>impugna lame forgiate nel passato<br>
+e osa entrare in mondi che altri<br>possono soltanto immaginare.</p>
+<button class="open" type="button" id="openBtn">✦ APRI IL CODEX ✦</button>
+</section>
 </main>
 
 <section class="codex" id="codex" aria-hidden="true">
 <article class="page">
 
-<!-- FOGLIO I -->
+<!-- I -->
 <section id="page1">
-  <button class="close" type="button" data-close>✕</button>
-  <div class="seal">⚔️</div><div class="kicker">Foglio I · Le cronache</div>
-  <h2>Le pagine sono incomplete.</h2><div class="rule"></div>
-  <p>Poco sappiamo della persona che ci troviamo davanti.</p>
-  <p>Le cronache sono frammentarie.<br>Alcune parlano di lame.<br>
-  Altre di terre lontane, creature, battaglie<br>e storie che prendono vita davanti agli occhi.</p>
-  <p><em>Il resto dovrà essere scoperto.</em></p>
-  <button class="open" type="button" data-page="2">CONTINUA L'ESPLORAZIONE →</button>
+<button class="close" type="button" data-close>✕</button>
+<div class="seal">⚔️</div><div class="kicker">Foglio I · Le cronache</div>
+<h2>Le pagine sono incomplete.</h2><div class="rule"></div>
+<p>Poco sappiamo della persona che ci troviamo davanti.</p>
+<p>Le cronache sono frammentarie.<br>Alcune parlano di lame.<br>
+Altre di terre lontane, creature, battaglie<br>e storie che prendono vita davanti agli occhi.</p>
+<p><em>Il resto dovrà essere scoperto.</em></p>
+<button class="open" type="button" data-page="2">CONTINUA L'ESPLORAZIONE →</button>
 </section>
 
-<!-- FOGLIO II / MAPPA -->
+<!-- II -->
 <section id="page2" class="hidden">
-  <button class="close" type="button" data-close>✕</button>
-  <div class="seal">🗺️</div><div class="kicker">Foglio II · Le tre vie</div>
-  <h2>Tre vie si aprono davanti a te.</h2><div class="rule"></div>
-  <p>Il Codex non racconta una storia.<br><em>Ti invita ad entrarci.</em></p>
-
-  <div class="paths">
-    <button class="path-btn" type="button" data-room="3">
-      <span class="icon">⚔️</span><span><span class="path-title">LA SALA D'ARMI</span><span class="path-sub">Metti alla prova la tua lama.</span></span>
-    </button>
-    <button class="path-btn" type="button" data-room="4">
-      <span class="icon">🏰</span><span><span class="path-title">LE TERRE DELLA RIEVOCAZIONE</span><span class="path-sub">Il passato prende vita.</span></span>
-    </button>
-    <button class="path-btn" type="button" data-room="5">
-      <span class="icon">🎭</span><span><span class="path-title">IL PORTALE DEI VIVENTI</span><span class="path-sub">Entra nel mondo del LARP.</span></span>
-    </button>
-  </div>
-
-  <div class="path-result" id="pathResult">Ogni via è visitabile in qualsiasi momento.</div>
-  <div class="badges">
-    <span class="badge" id="badgeSword">⚔️ Lama</span>
-    <span class="badge" id="badgeRevo">🏰 Memoria</span>
-    <span class="badge" id="badgeLarp">🎭 Avventura</span>
-  </div>
-  <button class="mini-btn hidden" type="button" id="goTrials">✦ LE PROVE DEL CODEX ✦</button>
+<button class="close" type="button" data-close>✕</button>
+<div class="seal">🗺️</div><div class="kicker">Foglio II · Le tre vie</div>
+<h2>Tre vie si aprono davanti a te.</h2><div class="rule"></div>
+<p>Puoi entrare in ogni stanza quando vuoi.</p>
+<div class="paths">
+<button class="path-btn" type="button" data-room="3"><span class="icon">⚔️</span><span><span class="path-title">LA SALA D'ARMI</span><span class="path-sub">Un duello di riflessi.</span></span></button>
+<button class="path-btn" type="button" data-room="4"><span class="icon">🏰</span><span><span class="path-title">LE TERRE DELLA RIEVOCAZIONE</span><span class="path-sub">Cerca ciò che si nasconde nella scena.</span></span></button>
+<button class="path-btn" type="button" data-room="5"><span class="icon">🎭</span><span><span class="path-title">IL PORTALE DEI VIVENTI</span><span class="path-sub">Una mini-avventura LARP.</span></span></button>
+</div>
+<div class="path-result" id="pathResult">Esplora le tre stanze. Puoi fallire, riprovare e imparare.</div>
+<div class="badges"><span class="badge" id="badgeSword">⚔️ Lama</span><span class="badge" id="badgeRevo">🏰 Memoria</span><span class="badge" id="badgeLarp">🎭 Avventura</span></div>
+<button class="mini-btn hidden" type="button" id="goTrials">✦ LE TRE PROVE FINALI ✦</button>
 </section>
 
-<!-- SALA D'ARMI -->
-<section id="page3" class="hidden">
-  <button class="close" type="button" data-close>✕</button>
-  <div class="seal">⚔️</div><div class="kicker">La Sala d'Armi</div>
-  <h2>Il ferro attende.</h2><div class="rule"></div>
-  <div class="room-box">
-    <p>Davanti a te sono appese tre lame. Una sola sembra chiamarti.</p>
-    <div class="choice-grid">
-      <button class="mini-btn weapon" type="button" data-weapon="spada">⚔️ Spada lunga</button>
-      <button class="mini-btn weapon" type="button" data-weapon="fioretto">🗡️ Lama da duello</button>
-      <button class="mini-btn weapon" type="button" data-weapon="ascia">🪓 Ascia da battaglia</button>
-    </div>
-    <div class="sword-big" id="swordBig" title="Colpisci la lama">⚔️</div>
-    <p class="status" id="weaponStatus">Scegli un'arma, poi cliccala tre volte.</p>
-  </div>
-  <button class="back-map" type="button" data-page="2">← Torna alla mappa</button>
+<!-- III SWORD -->
+<section id="page3" class="hidden game-page">
+<button class="close" type="button" data-close>✕</button>
+<div class="game-content">
+<div class="game-top"><span>⚔️ SALA D'ARMI</span><span id="swordRound">TENTATIVO 1</span></div>
+<h2 class="game-title">Il Duello del Riflesso</h2>
+<p class="game-sub">Colpisci il bersaglio <strong>5 volte</strong>. Ma non appena appare, hai poco tempo.</p>
+<div class="hud"><span>Colpi: <b id="hits">0/5</b></span><span>Errori: <b id="misses">0/3</b></span><span>Tempo: <b id="time">—</b></span></div>
+<div class="timerbar"><div class="timerfill" id="timerFill"></div></div>
+<div class="duel-arena" id="duelArena"><div class="sword-guard">⚔️</div></div>
+<div class="feedback" id="swordFeedback">Premi INIZIA DUELLO.</div>
+<div class="game-actions"><button class="mini-btn" id="startSword">⚔️ INIZIA DUELLO</button><button class="mini-btn hidden" id="retrySword">↻ RIPROVA</button></div>
+</div>
 </section>
 
-<!-- RIEVOCAZIONE -->
-<section id="page4" class="hidden">
-  <button class="close" type="button" data-close>✕</button>
-  <div class="seal">🏰</div><div class="kicker">Le Terre della Rievocazione</div>
-  <h2>Il passato prende vita.</h2><div class="rule"></div>
-  <div class="room-box">
-    <p>Non guardare soltanto. Esplora la scena e trova i tre dettagli nascosti.</p>
-    <div class="scene-box">
-      <div class="label">UN GIORNO FUORI DAL XXI SECOLO</div>
-      <div class="fire relic" data-relic="1">🔥</div>
-      <div class="banner relic" data-relic="2">🏳️</div>
-      <div class="chest relic" data-relic="3">🧰</div>
-    </div>
-    <p class="status" id="relicStatus">Dettagli trovati: 0 / 3</p>
-    <p><em>Costumi, accessori, armi e persone: per un giorno, un altro tempo.</em></p>
-  </div>
-  <button class="back-map" type="button" data-page="2">← Torna alla mappa</button>
+<!-- IV REENACTMENT -->
+<section id="page4" class="hidden game-page">
+<button class="close" type="button" data-close>✕</button>
+<div class="game-content">
+<div class="game-top"><span>🏰 TERRE DELLA RIEVOCAZIONE</span><span id="huntRound">TENTATIVO 1</span></div>
+<h2 class="game-title">L'Occhio del Rievocatore</h2>
+<p class="game-sub">Trova i <strong>5 oggetti</strong> nascosti nella scena. Ogni errore costa una vita.</p>
+<div class="hud"><span>Oggetti: <b id="found">0/5</b></span><span>Vite: <b id="lives">3</b></span></div>
+<div class="scene-hunt" id="huntScene">
+<div class="sky-banner search-item" data-find="1">🏳️</div>
+<div class="torch search-item" data-find="2">🔥</div>
+<div class="shield search-item" data-find="3">🛡️</div>
+<div class="helm search-item" data-find="4">⛑️</div>
+<div class="scroll search-item" data-find="5">📜</div>
+<div class="horse">🐎</div>
+<div class="feedback" id="huntFeedback"></div>
+</div>
+<p class="search-hint">Tocca un oggetto sospetto. Non tutto ciò che vedi è importante.</p>
+<div class="game-actions"><button class="mini-btn hidden" id="retryHunt">↻ RIPROVA LA RICERCA</button></div>
+</div>
 </section>
 
-<!-- LARP -->
-<section id="page5" class="hidden">
-  <button class="close" type="button" data-close>✕</button>
-  <div class="seal">🎭</div><div class="kicker">Il Portale dei Viventi</div>
-  <h2>Qui la storia si gioca davvero.</h2><div class="rule"></div>
-  <div class="room-box">
-    <p>Un dado decide se il portale ti lascia passare.</p>
-    <div class="dice" id="roomDice">20</div>
-    <p class="status" id="larpStatus">Tira il D20.</p>
-    <div class="choice-grid hidden" id="larpChoice">
-      <button class="mini-btn" type="button" data-larp="talk">🗣️ Parla con la guardia.</button>
-      <button class="mini-btn" type="button" data-larp="lie">🎭 Inventati una storia.</button>
-      <button class="mini-btn" type="button" data-larp="fight">⚔️ Sfida la guardia.</button>
-    </div>
-  </div>
-  <button class="back-map" type="button" data-page="2">← Torna alla mappa</button>
+<!-- V LARP -->
+<section id="page5" class="hidden game-page">
+<button class="close" type="button" data-close>✕</button>
+<div class="game-content">
+<div class="game-top"><span>🎭 PORTALE DEI VIVENTI</span><span id="larpRound">TENTATIVO 1</span></div>
+<h2 class="game-title">La Notte alla Taverna</h2>
+<p class="game-sub">Una mini-avventura a bivi. Ogni scelta cambia la situazione.</p>
+<div class="hud"><span>❤️ Vite: <b id="larpHp">3</b></span><span>⭐ Fama: <b id="fame">0</b></span><span>🎲 Fortuna: <b id="luck">1</b></span></div>
+<div class="larp-board">
+<div class="quest-text" id="questText">Sei davanti a una taverna. La porta è chiusa. Una guardia ti osserva.</div>
+<div class="quest-map">
+<div class="node current" id="node1">🚪<br>Porta</div><div class="node locked" id="node2">🗡️<br>Guardia</div><div class="node locked" id="node3">🍺<br>Taverna</div>
+<div class="node locked" id="node4">🗝️<br>Segreto</div><div class="node locked" id="node5">👑<br>Finale</div>
+</div>
+<div class="choice-grid" id="larpChoices">
+<button class="choice-btn" data-choice="talk">🗣️ Parla con la guardia.</button>
+<button class="choice-btn" data-choice="distract">🎭 Distraila con una storia assurda.</button>
+<button class="choice-btn" data-choice="fight">⚔️ Sfidala.</button>
+</div>
+</div>
+<p class="feedback" id="larpFeedback"></p>
+<div class="game-actions"><button class="mini-btn hidden" id="retryLarp">↻ RIPROVA L'AVVENTURA</button></div>
+</div>
 </section>
 
-<!-- PROVE -->
-<section id="page6" class="hidden">
-  <button class="close" type="button" data-close>✕</button>
-  <div class="seal">📜</div><div class="kicker">Foglio III · Le prove</div>
-  <h2>Il Codex ti mette alla prova.</h2><div class="rule"></div>
-  <p>Tre prove. Nessuna risposta perfetta. Solo lama, fortuna e caos.</p>
-  <div class="room-box">
-    <div class="parchment-card">
-      <h3>⚔️ Prova della Lama</h3>
-      <p>Colpisci la spada tre volte.</p>
-      <button class="mini-btn" type="button" id="trialSword">⚔️ COLPISCI</button>
-      <p class="status" id="trialSwordText">0 / 3</p>
-    </div>
-    <div class="parchment-card">
-      <h3>🎲 Prova del Destino</h3>
-      <p>Il dado deve parlare.</p>
-      <div class="dice" id="trialDice">20</div>
-      <p class="status" id="trialDiceText">Tiro richiesto.</p>
-    </div>
-    <div class="parchment-card">
-      <h3>🎭 Prova dell'Avventuriero</h3>
-      <p>La porta della taverna si spalanca. L'oste ti accusa di aver rubato una moneta.</p>
-      <div class="choice-grid" id="trialChoices">
-        <button class="mini-btn" type="button" data-trial="talk">🗣️ Convincerlo con le buone.</button>
-        <button class="mini-btn" type="button" data-trial="lie">🎭 Inventare una storia assurda.</button>
-        <button class="mini-btn" type="button" data-trial="fight">⚔️ Sfida a duello.</button>
-      </div>
-      <p class="status" id="trialLarpText"></p>
-    </div>
-  </div>
-  <button class="open hidden" type="button" id="finalBtn">✦ HAI SUPERATO LE PROVE ✦</button>
+<!-- VI FINAL THREE TESTS -->
+<section id="page6" class="hidden game-page">
+<button class="close" type="button" data-close>✕</button>
+<div class="game-content">
+<div class="game-top"><span>📜 FOGLIO III</span><span>LE TRE PROVE</span></div>
+<h2 class="game-title">Il Codex ti mette alla prova.</h2>
+<p class="game-sub">Tre prove separate. Se perdi, ricominci quella prova. <strong>Niente vite finite.</strong></p>
+<div class="paths">
+<button class="path-btn" id="finalSword" type="button"><span class="icon">⚔️</span><span><span class="path-title">PROVA DELLA LAMA</span><span class="path-sub">Raggiungi 3 colpi.</span></span></button>
+<button class="path-btn" id="finalDice" type="button">
+  <span class="icon d20-mini" aria-hidden="true">
+    <svg viewBox="0 0 100 100">
+      <polygon points="50,4 91,30 82,78 50,96 18,78 9,30" fill="#5a3a20" stroke="#c59a5c" stroke-width="3"/>
+      <polygon points="50,4 50,50 9,30" fill="#79502a" stroke="#c59a5c" stroke-width="1.5"/>
+      <polygon points="50,4 91,30 50,50" fill="#6b4524" stroke="#c59a5c" stroke-width="1.5"/>
+      <polygon points="9,30 50,50 18,78" fill="#4b301b" stroke="#c59a5c" stroke-width="1.5"/>
+      <polygon points="91,30 82,78 50,50" fill="#432a18" stroke="#c59a5c" stroke-width="1.5"/>
+      <polygon points="18,78 50,50 50,96" fill="#633e21" stroke="#c59a5c" stroke-width="1.5"/>
+      <polygon points="82,78 50,50 50,96" fill="#53331c" stroke="#c59a5c" stroke-width="1.5"/>
+      <text x="50" y="58" text-anchor="middle" class="d20-number">20</text>
+    </svg>
+  </span>
+  <span><span class="path-title">PROVA DEL DESTINO</span><span class="path-sub" id="finalDiceText">Tira il vero D20.</span></span>
+</button>
+<button class="path-btn" id="finalLarp" type="button"><span class="icon">🎭</span><span><span class="path-title">PROVA DELL'AVVENTURIERO</span><span class="path-sub">Sopravvivi alla situazione.</span></span></button>
+</div>
+<div class="path-result" id="trialStatus">Completa le tre prove. Ogni prova può essere ripetuta.</div>
+<button class="open hidden" id="unlockFinal" type="button">✦ IL CODEX HA DECISO ✦</button>
+</div>
 </section>
 
-<!-- FINALE -->
-<section id="page7" class="hidden">
-  <button class="close" type="button" data-close>✕</button>
-  <div class="seal">🐉</div><div class="kicker">Foglio IV · Il segreto</div>
-  <h2>Hai trovato qualcosa che non dovevi trovare.</h2><div class="rule"></div>
-  <p>Le cronache si interrompono.</p>
-  <p>Una creatura compare nel margine della pagina.</p>
-  <div class="dragon" id="dragon">🐉</div>
-  <p><em>Forse è meglio non toccarlo.</em></p>
-  <button class="secret-btn" type="button" id="secretBtn">[ Non c'è assolutamente niente qui. ]</button>
-  <div id="secretResult" class="final"></div>
-  <div id="ending" class="hidden">
-    <p class="final">Le cronache su Alec rimangono incomplete.<br><br>
-    Ma forse è proprio questo il punto.<br>
-    Alcune storie non sono scritte per essere lette.<br>
-    <strong>Sono scritte per essere vissute.</strong></p>
-    <p>— Fine del primo capitolo —</p>
-  </div>
+<!-- VII FINAL -->
+<section id="page7" class="hidden game-page">
+<button class="close" type="button" data-close>✕</button>
+<div class="game-content">
+<div class="kicker">Foglio IV · Ciò che era nascosto</div>
+<div class="final-seal">🔐</div>
+<h2 class="game-title">Il Codex si apre.</h2>
+<div class="rule"></div>
+<p class="final-text">Hai attraversato le tre vie.<br>Hai superato le prove.<br>Ma il Codex non ti consegna ancora una risposta.</p>
+<button class="open" id="reveal" type="button">APRI IL SIGILLO</button>
+<div id="revealText" class="hidden">
+<p class="final-text"><strong>La cronaca di Alec non è stata ancora scritta.</strong><br><br>
+Perché certe persone non appartengono a una sola storia.<br>
+Sono quelle che passano dalla realtà alla rievocazione,<br>
+dalla lama al dado, dal personaggio alla persona.</p>
+<div class="final-seal">🐉</div>
+<p><em>Qualcuno, però, ha lasciato una cosa sul retro.</em></p>
+<button class="secret-btn" id="dragonSecret">[ girare la pagina ]</button>
+<div id="secretResult" class="secret-result"></div>
+</div>
+</div>
 </section>
 
 </article>
@@ -285,103 +328,240 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none!important}
 
 <script>
 (() => {
-  const codex=document.getElementById("codex");
-  const pages=[1,2,3,4,5,6,7].map(n=>document.getElementById("page"+n));
-  const visited=new Set();
+const codex=document.getElementById("codex");
+const pages=[1,2,3,4,5,6,7].map(n=>document.getElementById("page"+n));
+const visited=new Set();
+let audioCtx=null;
 
-  function showPage(n){
-    pages.forEach((el,i)=>el.classList.toggle("hidden",i!==n-1));
-    codex.classList.add("show"); codex.setAttribute("aria-hidden","false");
-    codex.querySelector(".page").scrollTop=0;
+function showPage(n){
+  pages.forEach((el,i)=>el.classList.toggle("hidden",i!==n-1));
+  codex.classList.add("show");codex.setAttribute("aria-hidden","false");
+  const page=pages[n-1]; if(page) page.scrollTop=0;
+}
+function closeCodex(){stopSwordTimer();codex.classList.remove("show");codex.setAttribute("aria-hidden","true")}
+function mark(type,badge){
+  visited.add(type);document.getElementById(badge).classList.add("found");
+  const count=visited.size;
+  document.getElementById("pathResult").textContent=count===3?
+  "Le tre vie sono state esplorate. Ora il Codex può metterti davvero alla prova.":
+  `Hai esplorato ${count}/3 vie. Puoi tornare nelle altre quando vuoi.`;
+  if(count===3)document.getElementById("goTrials").classList.remove("hidden");
+}
+function beep(freq=180,dur=.08){
+  try{
+    const C=window.AudioContext||window.webkitAudioContext;if(!C)return;
+    audioCtx=audioCtx||new C();const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.frequency.value=freq;g.gain.setValueAtTime(.0001,audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.08,audioCtx.currentTime+.01);
+    g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+dur);
+    o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+dur+.02);
+  }catch(e){}
+}
+document.getElementById("openBtn").addEventListener("click",()=>showPage(1));
+document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",closeCodex));
+document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>showPage(Number(b.dataset.page))));
+document.querySelectorAll("[data-room]").forEach(b=>b.addEventListener("click",()=>showPage(Number(b.dataset.room))));
+document.getElementById("goTrials").addEventListener("click",()=>showPage(6));
+
+/* SWORD FULL GAME */
+let swordTimer=null,swordRunning=false,swordHits=0,swordMiss=0,swordAttempt=1;
+const arena=document.getElementById("duelArena"),target=document.createElement("button");
+target.type="button";target.className="target";target.setAttribute("aria-label","Bersaglio");
+target.textContent="";target.style.display="none";arena.appendChild(target);
+
+function stopSwordTimer(){if(swordTimer){clearInterval(swordTimer);swordTimer=null} swordRunning=false}
+function resetSword(){
+ stopSwordTimer();swordHits=0;swordMiss=0;
+ document.getElementById("hits").textContent="0/5";document.getElementById("misses").textContent="0/3";
+ document.getElementById("time").textContent="—";document.getElementById("timerFill").style.width="100%";
+ target.style.display="none";document.getElementById("startSword").classList.remove("hidden");
+ document.getElementById("retrySword").classList.add("hidden");
+ document.getElementById("swordFeedback").textContent="Premi INIZIA DUELLO.";
+}
+function spawnTarget(){
+ if(!swordRunning)return;
+ const maxX=Math.max(10,arena.clientWidth-82),maxY=Math.max(10,arena.clientHeight-120);
+ target.style.left=(10+Math.random()*maxX*.9)+"px";target.style.top=(10+Math.random()*maxY*.8)+"px";
+ target.style.display="flex";
+ let left=1.55;document.getElementById("time").textContent=left.toFixed(1)+"s";
+ document.getElementById("timerFill").style.width="100%";
+ const started=performance.now();
+ clearInterval(swordTimer);
+ swordTimer=setInterval(()=>{
+  const elapsed=(performance.now()-started)/1000;left=Math.max(0,1.55-elapsed);
+  document.getElementById("time").textContent=left.toFixed(1)+"s";
+  document.getElementById("timerFill").style.width=(left/1.55*100)+"%";
+  if(left<=0){clearInterval(swordTimer);target.style.display="none";swordMiss++;updateSword();if(swordMiss>=3)loseSword();else setTimeout(spawnTarget,350)}
+ },40);
+}
+function updateSword(){document.getElementById("hits").textContent=swordHits+"/5";document.getElementById("misses").textContent=swordMiss+"/3"}
+function loseSword(){
+ stopSwordTimer();target.style.display="none";document.getElementById("swordFeedback").textContent="💥 Hai perso il duello. Nessun problema: la lama ti concede un'altra occasione.";
+ document.getElementById("retrySword").classList.remove("hidden");document.getElementById("startSword").classList.add("hidden");swordAttempt++;
+ document.getElementById("swordRound").textContent="TENTATIVO "+swordAttempt;
+}
+function winSword(){
+ stopSwordTimer();target.style.display="none";document.getElementById("swordFeedback").textContent="⚔️ Colpo perfetto. Hai superato la Sala d'Armi.";
+ document.getElementById("retrySword").classList.add("hidden");document.getElementById("startSword").classList.add("hidden");mark("sword","badgeSword");
+}
+function startSword(){
+ resetSword();swordRunning=true;document.getElementById("startSword").classList.add("hidden");
+ document.getElementById("swordFeedback").textContent="Attento... il bersaglio sta arrivando.";
+ setTimeout(spawnTarget,400);
+}
+target.addEventListener("click",e=>{
+ e.stopPropagation();if(!swordRunning)return;
+ clearInterval(swordTimer);target.style.display="none";swordHits++;beep(280,.07);updateSword();
+ if(swordHits>=5)winSword();else setTimeout(spawnTarget,280);
+});
+document.getElementById("startSword").addEventListener("click",startSword);
+document.getElementById("retrySword").addEventListener("click",()=>{swordAttempt++;document.getElementById("swordRound").textContent="TENTATIVO "+swordAttempt;startSword()});
+
+/* REENACTMENT SEARCH GAME */
+let foundItems=0,huntLives=3,huntAttempt=1;
+function resetHunt(){
+ foundItems=0;huntLives=3;
+ document.getElementById("found").textContent="0/5";document.getElementById("lives").textContent="3";
+ document.getElementById("huntFeedback").textContent="";
+ document.querySelectorAll(".search-item").forEach(x=>x.classList.remove("found"));
+ document.getElementById("retryHunt").classList.add("hidden");
+ document.getElementById("huntRound").textContent="TENTATIVO "+huntAttempt;
+}
+document.getElementById("huntScene").addEventListener("click",e=>{
+ if(!e.target.classList.contains("scene-hunt") && !e.target.classList.contains("search-item"))return;
+ if(e.target.classList.contains("search-item")){
+   if(e.target.classList.contains("found"))return;
+   e.target.classList.add("found");foundItems++;beep(240,.06);
+   document.getElementById("found").textContent=foundItems+"/5";
+   document.getElementById("huntFeedback").textContent="Hai trovato un dettaglio della scena.";
+   if(foundItems===5){document.getElementById("huntFeedback").textContent="🏰 Occhio infallibile. Hai ricostruito la scena.";mark("revo","badgeRevo")}
+ }else if(foundItems<5){
+   huntLives--;document.getElementById("lives").textContent=huntLives;beep(90,.1);
+   document.getElementById("huntFeedback").textContent=huntLives>0?"Niente. Un tentativo sprecato.":"💥 Hai perso la pista. Puoi ricominciare.";
+   if(huntLives<=0){document.getElementById("retryHunt").classList.remove("hidden")}
+ }
+});
+document.getElementById("retryHunt").addEventListener("click",()=>{huntAttempt++;resetHunt()});
+
+/* LARP GAME */
+let hp=3,fame=0,luck=1,larpStage=1,larpAttempt=1;
+const questText=document.getElementById("questText"),larpChoices=document.getElementById("larpChoices");
+function resetLarp(){
+ hp=3;fame=0;luck=1;larpStage=1;
+ document.getElementById("larpHp").textContent=hp;document.getElementById("fame").textContent=fame;document.getElementById("luck").textContent=luck;
+ document.getElementById("larpRound").textContent="TENTATIVO "+larpAttempt;
+ document.getElementById("larpFeedback").textContent="";
+ questText.textContent="Sei davanti a una taverna. La porta è chiusa. Una guardia ti osserva.";
+ document.querySelectorAll(".node").forEach((n,i)=>n.classList.toggle("locked",i>0));
+ document.getElementById("node1").classList.add("current");document.querySelectorAll(".node").forEach((n,i)=>{if(i>0)n.classList.remove("current")});
+ larpChoices.innerHTML=`
+ <button class="choice-btn" data-choice="talk">🗣️ Parla con la guardia.</button>
+ <button class="choice-btn" data-choice="distract">🎭 Distraila con una storia assurda.</button>
+ <button class="choice-btn" data-choice="fight">⚔️ Sfidala.</button>`;
+ bindLarpChoices();
+}
+function setNode(n){document.querySelectorAll(".node").forEach((x,i)=>{x.classList.toggle("current",i===n-1);if(i<n)x.classList.remove("locked")})}
+function damage(){
+ hp--;document.getElementById("larpHp").textContent=hp;beep(80,.1);
+ if(hp<=0){document.getElementById("larpFeedback").textContent="💥 La tua avventura finisce qui. Ma puoi riprovare.";larpChoices.innerHTML="";document.getElementById("retryLarp").classList.remove("hidden");return true}
+ return false;
+}
+function bindLarpChoices(){
+ larpChoices.querySelectorAll("[data-choice]").forEach(b=>b.addEventListener("click",()=>{
+  const c=b.dataset.choice;
+  if(larpStage===1){
+   if(c==="fight"){if(damage())return;questText.textContent="La guardia abbassa la spada. «Parliamo.»";fame++;document.getElementById("fame").textContent=fame}
+   else if(c==="talk"){questText.textContent="La guardia ti lascia passare, ma chiede un favore.";fame++;document.getElementById("fame").textContent=fame}
+   else{questText.textContent="La storia è talmente assurda che la guardia resta senza parole.";luck++;document.getElementById("luck").textContent=luck}
+   larpStage=2;setNode(2);showChoices2();
   }
-  function closeCodex(){codex.classList.remove("show");codex.setAttribute("aria-hidden","true")}
-  function mark(type,badge){
-    visited.add(type);
-    document.getElementById(badge).classList.add("found");
-    document.getElementById("pathResult").textContent=
-      visited.size===3 ? "Hai esplorato tutte le vie. Ora puoi affrontare le prove." : "La via è stata esplorata. Puoi tornare qui e sceglierne un'altra.";
-    if(visited.size===3) document.getElementById("goTrials").classList.remove("hidden");
+  else if(larpStage===2){
+   if(c==="key"){questText.textContent="Trovi una chiave sotto il bancone.";fame++;document.getElementById("fame").textContent=fame}
+   else if(c==="drink"){questText.textContent="L'oste ti offre da bere. Ma hai perso tempo.";luck=Math.max(0,luck-1);document.getElementById("luck").textContent=luck}
+   else{if(damage())return;questText.textContent="Il gatto ti graffia. Non era una buona idea."}
+   larpStage=3;setNode(3);showChoices3();
   }
-
-  document.getElementById("openBtn").addEventListener("click",()=>showPage(1));
-  document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",closeCodex));
-  document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>showPage(Number(b.dataset.page))));
-  document.querySelectorAll("[data-room]").forEach(b=>b.addEventListener("click",()=>showPage(Number(b.dataset.room))));
-  document.getElementById("goTrials").addEventListener("click",()=>showPage(6));
-
-  // Sala d'armi
-  let weapon="",hits=0;
-  document.querySelectorAll(".weapon").forEach(b=>b.addEventListener("click",()=>{
-    weapon=b.dataset.weapon; hits=0;
-    document.getElementById("weaponStatus").textContent=`Hai scelto ${weapon}. Ora colpisci la lama tre volte.`;
-  }));
-  document.getElementById("swordBig").addEventListener("click",()=>{
-    if(!weapon){document.getElementById("weaponStatus").textContent="Prima scegli una delle tre armi.";return}
-    hits++;
-    const el=document.getElementById("swordBig");el.classList.remove("slash");void el.offsetWidth;el.classList.add("slash");
-    document.getElementById("weaponStatus").textContent=hits<3?`Colpi: ${hits} / 3`:`Tre colpi. La ${weapon} è stata accettata dal Codex.`;
-    if(hits>=3) mark("sword","badgeSword");
-  });
-
-  // Rievocazione
-  let relics=0;
-  document.querySelectorAll("[data-relic]").forEach(el=>el.addEventListener("click",()=>{
-    if(el.classList.contains("found")) return;
-    el.classList.add("found"); relics++;
-    document.getElementById("relicStatus").textContent=`Dettagli trovati: ${relics} / 3`;
-    if(relics===3) mark("revo","badgeRevo");
-  }));
-
-  // LARP room
-  document.getElementById("roomDice").addEventListener("click",function(){
-    this.classList.remove("roll");void this.offsetWidth;this.classList.add("roll");
-    const roll=Math.floor(Math.random()*20)+1;this.textContent=roll;
-    const status=document.getElementById("larpStatus");
-    status.textContent=roll>=10?`Hai tirato ${roll}. Il portale si apre. Scegli come entrare.`:`Hai tirato ${roll}. La guardia non è impressionata. Ritenta.`;
-    if(roll>=10) document.getElementById("larpChoice").classList.remove("hidden");
-  });
-  document.querySelectorAll("[data-larp]").forEach(b=>b.addEventListener("click",()=>{
-    const messages={talk:"La guardia ti lascia passare. Diplomazia: sorprendentemente efficace.",lie:"La storia è talmente assurda che la guardia resta senza parole. Passi.",fight:"La guardia ride. Poi estrae la spada. Forse era una pessima idea."};
-    document.getElementById("larpStatus").textContent=messages[b.dataset.larp];
-    mark("larp","badgeLarp");
-  }));
-
-  // Trials
-  let ts=0,diceOk=false,larpOk=false;
-  document.getElementById("trialSword").addEventListener("click",()=>{
-    ts=Math.min(3,ts+1);document.getElementById("trialSwordText").textContent=`${ts} / 3`;
-    checkTrials();
-  });
-  document.getElementById("trialDice").addEventListener("click",function(){
-    this.classList.remove("roll");void this.offsetWidth;this.classList.add("roll");
-    const r=Math.floor(Math.random()*20)+1;this.textContent=r;
-    diceOk=true;document.getElementById("trialDiceText").textContent=`Hai tirato ${r}. Il destino è stato consultato.`;
-    checkTrials();
-  });
-  document.querySelectorAll("[data-trial]").forEach(b=>b.addEventListener("click",()=>{
-    larpOk=true;
-    const m={talk:"L'oste accetta le tue spiegazioni. Per ora.",lie:"La storia è ridicola. Funziona.",fight:"Hai scelto il duello. Coraggioso. Discutibile."};
-    document.getElementById("trialLarpText").textContent=m[b.dataset.trial];checkTrials();
-  }));
-  function checkTrials(){
-    if(ts>=3&&diceOk&&larpOk)document.getElementById("finalBtn").classList.remove("hidden");
+  else if(larpStage===3){
+   if(c==="secret"){questText.textContent="Dietro una botte trovi un passaggio segreto.";fame+=2;document.getElementById("fame").textContent=fame;larpStage=4;setNode(4);showChoices4()}
+   else if(c==="leave"){if(damage())return;questText.textContent="Esci dalla taverna. L'avventura è finita troppo presto.";larpStage=4;setNode(4);showChoices4()}
+   else{luck=Math.max(0,luck-1);document.getElementById("luck").textContent=luck;questText.textContent="Una trappola scatta. Per fortuna la eviti.";larpStage=4;setNode(4);showChoices4()}
   }
-  document.getElementById("finalBtn").addEventListener("click",()=>showPage(7));
-
-  // Dragon easter egg
-  let farted=false;
-  function dragonFart(){
-    if(farted)return;farted=true;
-    document.getElementById("secretResult").innerHTML="<strong>💨 SEI APPENA STATO COLPITO DA UNA PUZZETTA DI DRAGO.</strong><br><br>-5 Carisma · +10 danni olfattivi<br><em>Effetto: disgustato per 3 turni.</em><br><br>🐉 «SCUSA.»";
-    try{
-      const C=window.AudioContext||window.webkitAudioContext;
-      if(C){const c=new C(),o=c.createOscillator(),g=c.createGain();o.type="sawtooth";o.frequency.setValueAtTime(105,c.currentTime);o.frequency.exponentialRampToValueAtTime(40,c.currentTime+.65);g.gain.setValueAtTime(.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(.25,c.currentTime+.04);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.7);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.72)}
-    }catch(e){}
-    document.getElementById("ending").classList.remove("hidden");
+  else if(larpStage===4){
+   if(c==="open"){if(luck>0){questText.textContent="Il passaggio si apre. Dietro c'è il tesoro.";fame+=3;document.getElementById("fame").textContent=fame}else{if(damage())return;questText.textContent="La serratura resiste. Il rumore attira qualcuno."}}
+   else if(c==="wait"){luck++;document.getElementById("luck").textContent=luck;questText.textContent="Aspetti. La serratura scatta da sola."}
+   else{if(damage())return;questText.textContent="Forzi la porta. Il tesoro cade quasi sulla tua testa."}
+   larpStage=5;setNode(5);finishLarp();
   }
-  document.getElementById("dragon").addEventListener("click",dragonFart);
-  document.getElementById("secretBtn").addEventListener("click",dragonFart);
-  codex.addEventListener("click",e=>{if(e.target===codex)closeCodex()});
+ }));
+}
+function showChoices2(){larpChoices.innerHTML=`
+<button class="choice-btn" data-choice="key">🗝️ Cerco una chiave.</button>
+<button class="choice-btn" data-choice="drink">🍺 Accetto da bere e ascolto.</button>
+<button class="choice-btn" data-choice="cat">🐈 Seguo un gatto sospetto.</button>`;bindLarpChoices()}
+function showChoices3(){larpChoices.innerHTML=`
+<button class="choice-btn" data-choice="secret">🕯️ Cerco un passaggio segreto.</button>
+<button class="choice-btn" data-choice="leave">🚪 Esco dalla taverna.</button>
+<button class="choice-btn" data-choice="trap">🧩 Esamino il pavimento.</button>`;bindLarpChoices()}
+function showChoices4(){larpChoices.innerHTML=`
+<button class="choice-btn" data-choice="open">🔐 Provo ad aprire il portale.</button>
+<button class="choice-btn" data-choice="wait">⏳ Aspetto e ascolto.</button>
+<button class="choice-btn" data-choice="force">💪 Lo forzo.</button>`;bindLarpChoices()}
+function finishLarp(){
+ larpChoices.innerHTML="";
+ document.getElementById("larpFeedback").textContent="🎭 Avventura completata. Il Codex ha registrato le tue scelte.";
+ mark("larp","badgeLarp");document.getElementById("retryLarp").classList.remove("hidden");
+}
+document.getElementById("retryLarp").addEventListener("click",()=>{larpAttempt++;document.getElementById("retryLarp").classList.add("hidden");resetLarp()});
+resetLarp();
+
+/* FINAL THREE TESTS */
+let fs=0,fd=false,fl=false;
+document.getElementById("finalSword").addEventListener("click",()=>{
+ fs=Math.min(3,fs+1);document.getElementById("trialStatus").textContent=`Prova della Lama: ${fs}/3.`;
+ if(fs>=3){document.getElementById("finalSword").disabled=true;checkFinal()}
+});
+/* REAL D20: SVG icosahedron-style die */
+document.getElementById("finalDice").addEventListener("click",()=>{
+ const btn=document.getElementById("finalDice");
+ const n=Math.floor(Math.random()*20)+1;
+ const number=btn.querySelector(".d20-number");
+ const svg=btn.querySelector("svg");
+ svg.classList.remove("roll"); void svg.offsetWidth; svg.classList.add("roll");
+ number.textContent=n;
+ document.getElementById("finalDiceText").textContent =
+   n===20 ? "CRITICO! Il destino è dalla tua parte." :
+   n===1 ? "Fallimento critico. Riprova." :
+   `Hai tirato ${n}. Il destino ha parlato.`;
+ fd=true;checkFinal();
+});
+document.getElementById("finalLarp").addEventListener("click",()=>{
+ fl=!fl;
+ document.getElementById("finalLarp").querySelector(".path-sub").textContent=fl?"Prova superata.":"Sopravvivi alla situazione.";
+ if(fl)checkFinal();
+});
+function checkFinal(){
+ if(fs>=3&&fd&&fl){document.getElementById("trialStatus").textContent="⚜️ Le tre prove sono state superate. Qualcosa si sta aprendo...";document.getElementById("unlockFinal").classList.remove("hidden")}
+}
+document.getElementById("unlockFinal").addEventListener("click",()=>showPage(7));
+
+/* reveal + dragon */
+document.getElementById("reveal").addEventListener("click",()=>{
+ document.getElementById("reveal").classList.add("hidden");document.getElementById("revealText").classList.remove("hidden")
+});
+let farted=false;
+document.getElementById("dragonSecret").addEventListener("click",()=>{
+ if(farted)return;farted=true;
+ document.getElementById("secretResult").innerHTML="<strong>💨 SEI APPENA STATO COLPITO DA UNA PUZZETTA DI DRAGO.</strong><br><br>-5 Carisma · +10 danni olfattivi<br><em>Effetto: disgustato per 3 turni.</em><br><br>🐉 «SCUSA.»";
+ try{
+  const C=window.AudioContext||window.webkitAudioContext;if(C){
+   const c=new C(),o=c.createOscillator(),g=c.createGain();o.type="sawtooth";
+   o.frequency.setValueAtTime(105,c.currentTime);o.frequency.exponentialRampToValueAtTime(40,c.currentTime+.65);
+   g.gain.setValueAtTime(.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(.25,c.currentTime+.04);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.7);
+   o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.72)
+  }
+ }catch(e){}
+});
+codex.addEventListener("click",e=>{if(e.target===codex)closeCodex()});
 })();
 </script>
 </body>
