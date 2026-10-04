@@ -6,114 +6,47 @@
 <title>Il Codex di Alec</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=IM+Fell+English:ital@0;1&display=swap');
-
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:#0d0a08;color:#ead9b4}
 body{font-family:"IM Fell English",serif;overflow-x:hidden}
-
-.scene{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:30px;
-  position:relative;
-  background:
-    radial-gradient(circle at 50% 45%,rgba(170,112,48,.16),transparent 28%),
-    radial-gradient(circle at 50% 100%,rgba(0,0,0,.95),transparent 55%),
-    #0d0a08;
-}
-
-.candle{
-  position:absolute;width:180px;height:180px;border-radius:50%;
-  background:radial-gradient(circle,rgba(255,205,111,.22),rgba(255,154,50,.07) 35%,transparent 70%);
-  filter:blur(5px);animation:flicker 2.5s infinite alternate;
-}
+.scene{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px;position:relative;background:radial-gradient(circle at 50% 45%,rgba(170,112,48,.16),transparent 28%),radial-gradient(circle at 50% 100%,rgba(0,0,0,.95),transparent 55%),#0d0a08}
+.candle{position:absolute;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,205,111,.22),rgba(255,154,50,.07) 35%,transparent 70%);filter:blur(5px);animation:flicker 2.5s infinite alternate}
 @keyframes flicker{from{transform:scale(.95);opacity:.65}to{transform:scale(1.08);opacity:1}}
-
-.manuscript{
-  position:relative;width:min(900px,94vw);min-height:650px;padding:70px 8%;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;
-  background:
-    radial-gradient(ellipse at center,rgba(246,221,166,.96),rgba(191,151,91,.94)),
-    #c8a66b;
-  color:#2d1b0d;
-  border:12px solid #3b2412;
-  box-shadow:0 0 0 3px #8b6334,0 25px 80px #000, inset 0 0 80px rgba(65,32,8,.45);
-  clip-path:polygon(1% 2%,98% 0,99% 97%,2% 100%,0 50%);
-}
-
-.manuscript:before{
-  content:"";position:absolute;inset:25px;
-  border:2px solid rgba(77,42,16,.5);pointer-events:none;
-}
-.corner{
-  position:absolute;font-family:Cinzel,serif;font-size:42px;opacity:.55;
-}
-.tl{top:38px;left:45px}.tr{top:38px;right:45px}
-.bl{bottom:38px;left:45px}.br{bottom:38px;right:45px}
-
-.kicker{
-  font-family:Cinzel,serif;letter-spacing:5px;font-size:14px;
-  margin-bottom:22px;text-transform:uppercase;
-}
-h1{
-  font-family:Cinzel,serif;font-weight:600;font-size:clamp(34px,7vw,70px);
-  letter-spacing:3px;line-height:1.05;margin:0 0 25px;
-}
+.manuscript{position:relative;width:min(900px,94vw);min-height:650px;padding:70px 8%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(ellipse at center,rgba(246,221,166,.96),rgba(191,151,91,.94)),#c8a66b;color:#2d1b0d;border:12px solid #3b2412;box-shadow:0 0 0 3px #8b6334,0 25px 80px #000,inset 0 0 80px rgba(65,32,8,.45);clip-path:polygon(1% 2%,98% 0,99% 97%,2% 100%,0 50%)}
+.manuscript:before{content:"";position:absolute;inset:25px;border:2px solid rgba(77,42,16,.5);pointer-events:none}
+.corner{position:absolute;font-family:Cinzel,serif;font-size:42px;opacity:.55}.tl{top:38px;left:45px}.tr{top:38px;right:45px}.bl{bottom:38px;left:45px}.br{bottom:38px;right:45px}
+.kicker{font-family:Cinzel,serif;letter-spacing:5px;font-size:14px;margin-bottom:22px;text-transform:uppercase}
+h1{font-family:Cinzel,serif;font-weight:600;font-size:clamp(34px,7vw,70px);letter-spacing:3px;line-height:1.05;margin:0 0 25px}
 .rule{width:180px;height:1px;background:#5d391b;margin:5px auto 28px}
-.intro{font-size:clamp(19px,2.4vw,25px);line-height:1.65;max-width:650px;font-style:italic}
-.intro strong{font-style:normal}
-.open{
-  margin-top:38px;padding:16px 34px;background:#2d1b0d;color:#f0d9a7;
-  border:1px solid #9c7642;font-family:Cinzel,serif;letter-spacing:2px;
-  cursor:pointer;font-size:15px;transition:.3s;box-shadow:0 5px 15px #0006;
-}
+.intro{font-size:clamp(19px,2.4vw,25px);line-height:1.65;max-width:650px;font-style:italic}.intro strong{font-style:normal}
+.open{margin-top:38px;padding:16px 34px;background:#2d1b0d;color:#f0d9a7;border:1px solid #9c7642;font-family:Cinzel,serif;letter-spacing:2px;cursor:pointer;font-size:15px;transition:.3s;box-shadow:0 5px 15px #0006}
 .open:hover{transform:translateY(-3px);background:#422812;box-shadow:0 9px 25px #0008}
-
-.codex{
-  display:none;position:fixed;inset:0;z-index:10;background:#100c09;
-  align-items:center;justify-content:center;padding:30px;
-}
-.codex.show{display:flex;animation:appear .8s ease}
+.codex{display:none;position:fixed;inset:0;z-index:10;background:#100c09;align-items:center;justify-content:center;padding:30px}
+.codex.show{display:flex;animation:appear .6s ease}
 @keyframes appear{from{opacity:0}to{opacity:1}}
-
-.page{
-  width:min(850px,94vw);min-height:min(700px,90vh);overflow:auto;
-  background:linear-gradient(135deg,#d9bd83,#f1ddb0 50%,#c7a46a);
-  color:#2d1b0d;padding:65px 9%;position:relative;
-  border:10px solid #39230f;
-  box-shadow:0 25px 100px #000;
-  text-align:center;
-}
-.page h2{font-family:Cinzel,serif;font-size:clamp(28px,5vw,48px);margin:0 0 15px}
-.page p{font-size:20px;line-height:1.65}
-.seal{font-size:58px;margin:10px}
-.close{
- position:absolute;top:15px;right:20px;border:0;background:none;
- font-size:28px;color:#3a2412;cursor:pointer;
-}
-@media(max-width:600px){
- .manuscript{min-height:580px;padding:55px 10%}
- .corner{font-size:28px}.tl{left:28px;top:25px}.tr{right:28px;top:25px}
- .bl{left:28px;bottom:25px}.br{right:28px;bottom:25px}
-}
+.page{width:min(850px,94vw);height:min(86vh,700px);min-height:0;overflow:auto;background:linear-gradient(135deg,#d9bd83,#f1ddb0 50%,#c7a46a);color:#2d1b0d;padding:65px 9%;position:relative;border:10px solid #39230f;box-shadow:0 25px 100px #000;text-align:center}
+.page h2{font-family:Cinzel,serif;font-size:clamp(26px,5vw,44px);line-height:1.15;margin:0 0 12px}.page p{font-size:19px;line-height:1.5;margin:14px 0}.seal{font-size:50px;margin:4px}
+.close{position:absolute;top:15px;right:20px;border:0;background:none;font-size:28px;color:#3a2412;cursor:pointer}
+.hidden{display:none}
+.next{margin-top:28px}
+.choice{display:grid;gap:12px;max-width:480px;margin:25px auto 0}
+.choice button{padding:14px;background:#3b2412;color:#f0d9a7;border:1px solid #9c7642;font-family:"IM Fell English",serif;font-size:18px;cursor:pointer}
+.choice button:hover{background:#563719}
+.result{margin-top:22px;font-style:italic;min-height:35px}
+.back{background:none;border:0;color:#5b381b;text-decoration:underline;cursor:pointer;font-family:inherit;font-size:16px;margin-top:20px}
+@media(max-width:600px){.manuscript{min-height:580px;padding:55px 10%}.page{height:86vh;padding:42px 8%}.page h2{font-size:28px}.page p{font-size:17px;line-height:1.42;margin:11px 0}.seal{font-size:42px}.kicker{font-size:11px;letter-spacing:3px}.corner{font-size:28px}.tl{left:28px;top:25px}.tr{right:28px;top:25px}.bl{left:28px;bottom:25px}.br{right:28px;bottom:25px}}
 </style>
 </head>
 <body>
 
-<main class="scene">
+<main class="scene" id="home">
   <div class="candle"></div>
-
   <section class="manuscript">
     <div class="corner tl">✠</div><div class="corner tr">☩</div>
     <div class="corner bl">☩</div><div class="corner br">✠</div>
-
     <div class="kicker">Codice delle Cronache Perdute</div>
     <h1>Il Codex<br>di Alec</h1>
     <div class="rule"></div>
-
     <p class="intro">
       Qui comincia la cronaca di <strong>Alec</strong>,<br>
       persona che attraversa i secoli,<br>
@@ -121,40 +54,66 @@ h1{
       e osa entrare in mondi che altri<br>
       possono soltanto immaginare.
     </p>
-
-    <button class="open" onclick="openCodex()">✦ APRI IL CODEX ✦</button>
+    <button class="open" onclick="showPage(1)">✦ APRI IL CODEX ✦</button>
   </section>
 </main>
 
 <section class="codex" id="codex">
   <article class="page">
-    <button class="close" onclick="closeCodex()" aria-label="Chiudi">✕</button>
-    <div class="seal">⚔️</div>
-    <div class="kicker">Foglio I · Le cronache</div>
-    <h2>Le pagine sono incomplete.</h2>
-    <div class="rule"></div>
-    <p>
-      Poco sappiamo della persona che ci troviamo davanti.
-    </p>
-    <p>
-      Le cronache sono frammentarie.<br>
+
+    <div id="page1">
+      <button class="close" onclick="closeCodex()">✕</button>
+      <div class="seal">⚔️</div>
+      <div class="kicker">Foglio I · Le cronache</div>
+      <h2>Le pagine sono incomplete.</h2>
+      <div class="rule"></div>
+      <p>Poco sappiamo della persona che ci troviamo davanti.</p>
+      <p>Le cronache sono frammentarie.<br>
       Alcune parlano di lame.<br>
       Altre di terre lontane, creature, battaglie<br>
-      e storie che prendono vita davanti agli occhi.
-    </p>
-    <p><em>Il resto dovrà essere scoperto.</em></p>
-    <button class="open" onclick="closeCodex()">CONTINUA L'ESPLORAZIONE</button>
+      e storie che prendono vita davanti agli occhi.</p>
+      <p><em>Il resto dovrà essere scoperto.</em></p>
+      <button class="open next" onclick="showPage(2)">CONTINUA L'ESPLORAZIONE →</button>
+    </div>
+
+    <div id="page2" class="hidden">
+      <button class="close" onclick="closeCodex()">✕</button>
+      <div class="seal">🗺️</div>
+      <div class="kicker">Foglio II · Il sentiero</div>
+      <h2>Tre vie si aprono davanti a te.</h2>
+      <div class="rule"></div>
+      <p>Il Codex non racconta una storia.<br>
+      Ti invita ad entrarci.</p>
+      <div class="choice">
+        <button onclick="choose(1)">⚔️ La Sala d'Armi</button>
+        <button onclick="choose(2)">🏰 Le Terre della Rievocazione</button>
+        <button onclick="choose(3)">🎭 Il Portale dei Viventi</button>
+      </div>
+      <p class="result" id="result"></p>
+      <button class="back" onclick="showPage(1)">← Torna al foglio precedente</button>
+    </div>
+
   </article>
 </section>
 
 <script>
-function openCodex(){
+function showPage(n){
   document.getElementById("codex").classList.add("show");
+  document.getElementById("page1").classList.toggle("hidden", n !== 1);
+  document.getElementById("page2").classList.toggle("hidden", n !== 2);
+  window.scrollTo(0,0);
 }
 function closeCodex(){
   document.getElementById("codex").classList.remove("show");
 }
+function choose(n){
+  const text = {
+    1:"⚔️ La via della lama. Il ferro attende. E forse anche qualche tiro di dado.",
+    2:"🏰 La via del passato. Costumi, oggetti e persone che per un giorno hanno fatto rivivere un altro tempo.",
+    3:"🎭 La via del LARP. Qui non si assiste alla storia: si diventa parte della storia."
+  };
+  document.getElementById("result").textContent=text[n];
+}
 </script>
-
 </body>
 </html>
