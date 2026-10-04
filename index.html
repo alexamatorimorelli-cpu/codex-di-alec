@@ -125,7 +125,7 @@ opacity:.95}
 .helm{position:absolute;font-size:52px;top:95px;left:20%}
 .scroll{position:absolute;font-size:47px;bottom:70px;left:48%}
 .horse{position:absolute;font-size:52px;top:145px;right:8%;opacity:.18;z-index:10;pointer-events:auto}
-.search-item{position:absolute;cursor:pointer;z-index:10;filter:brightness(.42) saturate(.65) drop-shadow(0 0 2px rgba(255,215,130,.15));transition:transform .2s,filter .2s,opacity .2s;z-index:5;opacity:.32}
+.search-item{position:absolute;cursor:pointer;z-index:30;pointer-events:auto;touch-action:manipulation;filter:brightness(.42) saturate(.65) drop-shadow(0 0 2px rgba(255,215,130,.15));transition:transform .2s,filter .2s,opacity .2s;z-index:5;opacity:.32}
 .search-item:hover{transform:scale(1.08);filter:brightness(1.2) drop-shadow(0 0 8px rgba(255,215,130,.65))}
 .search-item.found{opacity:1;filter:brightness(1.25) drop-shadow(0 0 12px rgba(255,215,130,.9));pointer-events:none}
 .search-hint{font-family:Cinzel,serif;font-size:13px;letter-spacing:1px}
@@ -451,15 +451,19 @@ function moveFlashlight(e){
 }
 huntScene.addEventListener("pointermove",moveFlashlight);
 huntScene.addEventListener("pointerdown",moveFlashlight);
-huntScene.addEventListener("click",e=>{
- if(!e.target.classList.contains("scene-hunt") && !e.target.classList.contains("search-item"))return;
- if(e.target.classList.contains("search-item")){
-   if(e.target.classList.contains("found"))return;
-   e.target.classList.add("found");foundItems++;beep(240,.06);
+huntScene.addEventListener("pointerup",e=>{
+ if(e.pointerType === "touch") e.preventDefault();
+ let target=e.target.closest ? e.target.closest(".search-item") : null;
+ if(target && !huntScene.contains(target)) target=null;
+ if(target){
+   if(target.classList.contains("found"))return;
+   target.classList.add("found");foundItems++;beep(240,.06);
    document.getElementById("found").textContent=foundItems+"/5";
    document.getElementById("huntFeedback").textContent="Hai trovato un dettaglio della scena.";
    if(foundItems===5){document.getElementById("huntFeedback").textContent="🏰 Occhio infallibile. Hai ricostruito la scena.";mark("revo","badgeRevo")}
- }else if(foundItems<5){
+   return;
+ }
+ if(foundItems<5){
    huntLives--;document.getElementById("lives").textContent=huntLives;beep(90,.1);
    document.getElementById("huntFeedback").textContent=huntLives>0?"Niente. Un tentativo sprecato.":"💥 Hai perso la pista. Puoi ricominciare.";
    if(huntLives<=0){document.getElementById("retryHunt").classList.remove("hidden")}
