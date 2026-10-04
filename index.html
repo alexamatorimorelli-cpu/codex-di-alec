@@ -124,7 +124,7 @@ opacity:.95}
 .shield{position:absolute;font-size:55px;bottom:34px;right:10%}
 .helm{position:absolute;font-size:52px;top:95px;left:20%}
 .scroll{position:absolute;font-size:47px;bottom:70px;left:48%}
-.horse{position:absolute;font-size:52px;top:150px;right:26%;opacity:.18;z-index:1;pointer-events:none}
+.horse{position:absolute;font-size:52px;top:145px;right:8%;opacity:.18;z-index:10;pointer-events:auto}
 .search-item{position:absolute;cursor:pointer;z-index:10;filter:brightness(.42) saturate(.65) drop-shadow(0 0 2px rgba(255,215,130,.15));transition:transform .2s,filter .2s,opacity .2s;z-index:5;opacity:.32}
 .search-item:hover{transform:scale(1.08);filter:brightness(1.2) drop-shadow(0 0 8px rgba(255,215,130,.65))}
 .search-item.found{opacity:1;filter:brightness(1.25) drop-shadow(0 0 12px rgba(255,215,130,.9));pointer-events:none}
@@ -168,7 +168,7 @@ transition:transform .15s
 .page h2{font-size:28px}.page p{font-size:17px;line-height:1.42}.seal{font-size:40px}
 .game-page{padding:34px 20px}.game-page:before{inset:10px}
 .duel-arena{height:250px}.target{width:58px;height:58px}.sword-guard{font-size:58px}
- .scene-hunt{height:285px;touch-action:none}.scene-hunt .sky-banner{top:10px;left:72%;font-size:42px}.scene-hunt .torch{bottom:18px;left:7%;font-size:42px}.scene-hunt .shield{bottom:22px;right:7%;font-size:46px}.scene-hunt .helm{top:72px;left:10%;font-size:43px}.scene-hunt .scroll{bottom:70px;left:55%;font-size:39px}.scene-hunt .horse{top:142px;right:38%;font-size:42px}.scene-hunt .search-item{z-index:10}.quest-map{grid-template-columns:1fr 1fr}.node{min-height:62px}
+ .scene-hunt{height:285px;touch-action:none}.scene-hunt .sky-banner{top:10px;left:72%;font-size:42px}.scene-hunt .torch{bottom:18px;left:7%;font-size:42px}.scene-hunt .shield{bottom:22px;right:7%;font-size:46px}.scene-hunt .helm{top:72px;left:10%;font-size:43px}.scene-hunt .scroll{bottom:70px;left:55%;font-size:39px}.scene-hunt .horse{top:138px;right:8%;font-size:42px}.scene-hunt .search-item{z-index:10}.quest-map{grid-template-columns:1fr 1fr}.node{min-height:62px}
 .d20{width:125px;height:125px}
 }
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition:none!important}}
@@ -248,8 +248,8 @@ Altre di terre lontane, creature, battaglie<br>e storie che prendono vita davant
 <div class="torch search-item" data-find="2">🔥</div>
 <div class="shield search-item" data-find="3">🛡️</div>
 <div class="helm search-item" data-find="4">⛑️</div>
-<div class="scroll search-item" data-find="5">📜</div>
-<div class="horse">🐎</div>
+<div class="scroll">📜</div>
+<div class="horse search-item" data-find="5" aria-label="cavallo nascosto" title="Cavallo nascosto">🐎</div>
 <div class="feedback" id="huntFeedback"></div>
 </div>
 <p class="search-hint">🔦 Muovi il dito o il mouse per illuminare. I dettagli sono quasi invisibili nel buio.</p>
