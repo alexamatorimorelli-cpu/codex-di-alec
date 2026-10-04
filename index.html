@@ -219,7 +219,7 @@ Altre di terre lontane, creature, battaglie<br>e storie che prendono vita davant
 <div class="timerbar"><div class="timerfill" id="timerFill"></div></div>
 <div class="duel-arena" id="duelArena"><div class="sword-guard">⚔️</div></div>
 <div class="feedback" id="swordFeedback">Premi INIZIA DUELLO.</div>
-<div class="game-actions"><button class="mini-btn" id="startSword">⚔️ INIZIA DUELLO</button><button class="mini-btn hidden" id="retrySword">↻ RIPROVA</button></div>
+<div class="game-actions"><button class="mini-btn" id="startSword">⚔️ INIZIA DUELLO</button><button class="mini-btn hidden" id="retrySword">↻ RIPROVA</button><button class="mini-btn hidden" id="continueSword">→ TORNA ALLE TRE VIE</button></div>
 </div>
 </section>
 
@@ -376,7 +376,7 @@ function resetSword(){
  document.getElementById("hits").textContent="0/5";document.getElementById("misses").textContent="0/3";
  document.getElementById("time").textContent="—";document.getElementById("timerFill").style.width="100%";
  target.style.display="none";document.getElementById("startSword").classList.remove("hidden");
- document.getElementById("retrySword").classList.add("hidden");
+ document.getElementById("retrySword").classList.add("hidden");document.getElementById("continueSword").classList.add("hidden");
  document.getElementById("swordFeedback").textContent="Premi INIZIA DUELLO.";
 }
 function spawnTarget(run=swordRun){
@@ -403,7 +403,7 @@ function loseSword(){
 }
 function winSword(){
  if(!swordRunning)return; stopSwordTimer();target.style.display="none";document.getElementById("swordFeedback").textContent="⚔️ Colpo perfetto. Hai superato la Sala d'Armi.";
- document.getElementById("retrySword").classList.add("hidden");document.getElementById("startSword").classList.add("hidden");mark("sword","badgeSword");
+ document.getElementById("retrySword").classList.add("hidden");document.getElementById("startSword").classList.add("hidden");document.getElementById("continueSword").classList.remove("hidden");mark("sword","badgeSword");
 }
 function startSword(){
  resetSword();swordRun++;const run=swordRun;swordRunning=true;document.getElementById("startSword").classList.add("hidden");
@@ -417,6 +417,7 @@ target.addEventListener("click",e=>{
 });
 document.getElementById("startSword").addEventListener("click",startSword);
 document.getElementById("retrySword").addEventListener("click",()=>{swordAttempt++;document.getElementById("swordRound").textContent="TENTATIVO "+swordAttempt;startSword()});
+document.getElementById("continueSword").addEventListener("click",()=>showPage(2));
 
 /* REENACTMENT SEARCH GAME */
 let foundItems=0,huntLives=3,huntAttempt=1;
