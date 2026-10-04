@@ -124,8 +124,8 @@ opacity:.95}
 .shield{position:absolute;font-size:55px;bottom:34px;right:10%}
 .helm{position:absolute;font-size:52px;top:95px;left:20%}
 .scroll{position:absolute;font-size:47px;bottom:70px;left:48%}
-.horse{position:absolute;font-size:52px;top:145px;right:8%;opacity:.18;z-index:10;pointer-events:auto}
-.search-item{position:absolute;cursor:pointer;z-index:40;pointer-events:auto;touch-action:manipulation;filter:brightness(.42) saturate(.65) drop-shadow(0 0 2px rgba(255,215,130,.15));transition:transform .2s,filter .2s,opacity .2s;z-index:5;opacity:.32}
+.horse{position:absolute;font-size:52px;top:145px;right:8%;opacity:.18;z-index:40;pointer-events:auto;touch-action:none}
+.search-item{position:absolute;cursor:pointer;z-index:40;pointer-events:auto;touch-action:none;filter:brightness(.42) saturate(.65) drop-shadow(0 0 2px rgba(255,215,130,.15));transition:transform .2s,filter .2s,opacity .2s;z-index:5;opacity:.32}
 .search-item:hover{transform:scale(1.08);filter:brightness(1.2) drop-shadow(0 0 8px rgba(255,215,130,.65))}
 .search-item.found{opacity:1;filter:brightness(1.25) drop-shadow(0 0 12px rgba(255,215,130,.9));pointer-events:none}
 .search-hint{font-family:Cinzel,serif;font-size:13px;letter-spacing:1px}
@@ -466,37 +466,47 @@ function foundHuntItem(item){
 /* Ogni oggetto gestisce direttamente il proprio tocco.
    È molto più affidabile su Android rispetto a capire il target dal pointerup
    della scena, soprattutto quando il dito si muove mentre si usa la torcia. */
+function itemAtPoint(x,y){
+  for(const item of huntItems){
+    if(item.classList.contains("found")) continue;
+    const r=item.getBoundingClientRect();
+    const pad=14;
+    if(x>=r.left-pad && x<=r.right+pad && y>=r.top-pad && y<=r.bottom+pad) return item;
+  }
+  return null;
+}
+
 huntItems.forEach(item=>{
- item.addEventListener("pointerdown",e=>{
-   e.preventDefault();
-   e.stopPropagation();
-   moveFlashlight(e);
-   foundHuntItem(item);
- });
- item.addEventListener("click",e=>{
-   e.preventDefault();
-   e.stopPropagation();
-   foundHuntItem(item);
- });
+  item.addEventListener("click",e=>{
+    e.stopPropagation();
+    foundHuntItem(item);
+  });
+  item.addEventListener("touchend",e=>{
+    e.preventDefault();
+    e.stopPropagation();
+    const t=e.changedTouches[0];
+    if(t) { moveFlashlight({clientX:t.clientX,clientY:t.clientY}); }
+    foundHuntItem(item);
+  },{passive:false});
 });
 
 huntScene.addEventListener("pointermove",moveFlashlight);
-huntScene.addEventListener("pointerdown",e=>{
- if(e.target.closest && e.target.closest(".search-item")) return;
- moveFlashlight(e);
-});
-
 huntScene.addEventListener("pointerup",e=>{
- if(e.target.closest && e.target.closest(".search-item")) return;
- if(e.pointerType === "touch") e.preventDefault();
- if(foundItems<5 && huntLives>0){
-   huntLives--;
-   document.getElementById("lives").textContent=Math.max(0,huntLives);
-   beep(90,.1);
-   document.getElementById("huntFeedback").textContent=
-     huntLives>0 ? "Niente. Un tentativo sprecato." : "💥 Hai perso la pista. Puoi ricominciare.";
-   if(huntLives<=0) document.getElementById("retryHunt").classList.remove("hidden");
- }
+  const item=(e.target && e.target.closest) ? e.target.closest(".search-item") : null;
+  const hit=item || itemAtPoint(e.clientX,e.clientY);
+  moveFlashlight(e);
+  if(hit){
+    foundHuntItem(hit);
+    return;
+  }
+  if(foundItems<5 && huntLives>0){
+    huntLives--;
+    document.getElementById("lives").textContent=Math.max(0,huntLives);
+    beep(90,.1);
+    document.getElementById("huntFeedback").textContent=
+      huntLives>0 ? "Niente. Un tentativo sprecato." : "💥 Hai perso la pista. Puoi ricominciare.";
+    if(huntLives<=0) document.getElementById("retryHunt").classList.remove("hidden");
+  }
 });
 document.getElementById("retryHunt").addEventListener("click",()=>{
  huntAttempt++;
