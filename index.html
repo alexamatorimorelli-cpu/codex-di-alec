@@ -76,14 +76,15 @@ border:1px solid #9c7642;cursor:pointer}
 
 /* FULL-SCREEN GAMES */
 .game-page{
-width:calc(100vw - 28px);height:calc(100vh - 28px);max-width:none;max-height:none;
-padding:34px clamp(18px,5vw,70px);overflow:auto;
+position:fixed;inset:0;width:100vw;height:100vh;max-width:none;max-height:none;margin:0;
+padding:42px clamp(22px,6vw,90px);overflow:auto;
 display:flex;flex-direction:column;align-items:center;justify-content:center;
+z-index:50;border:0;box-shadow:none;clip-path:none;
 }
-.game-page:before{inset:16px}
+.game-page:before{inset:18px;border-color:rgba(77,42,16,.42)}
 .game-top{width:min(900px,100%);display:flex;justify-content:space-between;align-items:center;
 font-family:Cinzel,serif;font-size:12px;letter-spacing:2px;margin-bottom:10px}
-.game-content{width:min(900px,100%);position:relative}
+.game-content{width:min(900px,100%);position:relative;z-index:1}
 .game-title{font-family:Cinzel,serif;font-size:clamp(25px,5vw,48px);margin:0 0 8px}
 .game-sub{font-size:18px;margin:0 0 16px}
 .hud{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;font-family:Cinzel,serif;font-size:14px;margin:10px 0}
@@ -153,7 +154,7 @@ transition:transform .15s
 .tl{left:27px;top:25px}.tr{right:27px;top:25px}.bl{left:27px;bottom:25px}.br{right:27px;bottom:25px}
 .page{padding:38px 6%;max-height:calc(100vh - 20px)}
 .page h2{font-size:28px}.page p{font-size:17px;line-height:1.42}.seal{font-size:40px}
-.game-page{padding:30px 20px}.game-page:before{inset:10px}
+.game-page{padding:34px 20px}.game-page:before{inset:10px}
 .duel-arena{height:250px}.target{width:58px;height:58px}.sword-guard{font-size:58px}
 .scene-hunt{height:285px}.quest-map{grid-template-columns:1fr 1fr}.node{min-height:62px}
 .d20{width:125px;height:125px}
@@ -364,12 +365,12 @@ document.querySelectorAll("[data-room]").forEach(b=>b.addEventListener("click",(
 document.getElementById("goTrials").addEventListener("click",()=>showPage(6));
 
 /* SWORD FULL GAME */
-let swordTimer=null,swordRunning=false,swordHits=0,swordMiss=0,swordAttempt=1;
+let swordTimer=null,swordRunning=false,swordHits=0,swordMiss=0,swordAttempt=1,swordRun=0;
 const arena=document.getElementById("duelArena"),target=document.createElement("button");
 target.type="button";target.className="target";target.setAttribute("aria-label","Bersaglio");
 target.textContent="";target.style.display="none";arena.appendChild(target);
 
-function stopSwordTimer(){if(swordTimer){clearInterval(swordTimer);swordTimer=null} swordRunning=false}
+function stopSwordTimer(){swordRun++;if(swordTimer){clearInterval(swordTimer);swordTimer=null}swordRunning=false}
 function resetSword(){
  stopSwordTimer();swordHits=0;swordMiss=0;
  document.getElementById("hits").textContent="0/5";document.getElementById("misses").textContent="0/3";
@@ -378,8 +379,8 @@ function resetSword(){
  document.getElementById("retrySword").classList.add("hidden");
  document.getElementById("swordFeedback").textContent="Premi INIZIA DUELLO.";
 }
-function spawnTarget(){
- if(!swordRunning)return;
+function spawnTarget(run=swordRun){
+ if(!swordRunning || run!==swordRun)return;
  const maxX=Math.max(10,arena.clientWidth-82),maxY=Math.max(10,arena.clientHeight-120);
  target.style.left=(10+Math.random()*maxX*.9)+"px";target.style.top=(10+Math.random()*maxY*.8)+"px";
  target.style.display="flex";
@@ -391,28 +392,28 @@ function spawnTarget(){
   const elapsed=(performance.now()-started)/1000;left=Math.max(0,1.55-elapsed);
   document.getElementById("time").textContent=left.toFixed(1)+"s";
   document.getElementById("timerFill").style.width=(left/1.55*100)+"%";
-  if(left<=0){clearInterval(swordTimer);target.style.display="none";swordMiss++;updateSword();if(swordMiss>=3)loseSword();else setTimeout(spawnTarget,350)}
+  if(left<=0){clearInterval(swordTimer);target.style.display="none";swordMiss++;updateSword();if(swordMiss>=3)loseSword();else setTimeout(()=>spawnTarget(swordRun),350)}
  },40);
 }
 function updateSword(){document.getElementById("hits").textContent=swordHits+"/5";document.getElementById("misses").textContent=swordMiss+"/3"}
 function loseSword(){
- stopSwordTimer();target.style.display="none";document.getElementById("swordFeedback").textContent="💥 Hai perso il duello. Nessun problema: la lama ti concede un'altra occasione.";
+ if(!swordRunning)return; stopSwordTimer();target.style.display="none";document.getElementById("swordFeedback").textContent="💥 Hai perso il duello. Nessun problema: la lama ti concede un'altra occasione.";
  document.getElementById("retrySword").classList.remove("hidden");document.getElementById("startSword").classList.add("hidden");swordAttempt++;
  document.getElementById("swordRound").textContent="TENTATIVO "+swordAttempt;
 }
 function winSword(){
- stopSwordTimer();target.style.display="none";document.getElementById("swordFeedback").textContent="⚔️ Colpo perfetto. Hai superato la Sala d'Armi.";
+ if(!swordRunning)return; stopSwordTimer();target.style.display="none";document.getElementById("swordFeedback").textContent="⚔️ Colpo perfetto. Hai superato la Sala d'Armi.";
  document.getElementById("retrySword").classList.add("hidden");document.getElementById("startSword").classList.add("hidden");mark("sword","badgeSword");
 }
 function startSword(){
- resetSword();swordRunning=true;document.getElementById("startSword").classList.add("hidden");
+ resetSword();swordRun++;const run=swordRun;swordRunning=true;document.getElementById("startSword").classList.add("hidden");
  document.getElementById("swordFeedback").textContent="Attento... il bersaglio sta arrivando.";
- setTimeout(spawnTarget,400);
+ setTimeout(()=>spawnTarget(run),400);
 }
 target.addEventListener("click",e=>{
  e.stopPropagation();if(!swordRunning)return;
  clearInterval(swordTimer);target.style.display="none";swordHits++;beep(280,.07);updateSword();
- if(swordHits>=5)winSword();else setTimeout(spawnTarget,280);
+ if(swordHits>=5)winSword();else setTimeout(()=>spawnTarget(swordRun),280);
 });
 document.getElementById("startSword").addEventListener("click",startSword);
 document.getElementById("retrySword").addEventListener("click",()=>{swordAttempt++;document.getElementById("swordRound").textContent="TENTATIVO "+swordAttempt;startSword()});
