@@ -39,13 +39,18 @@ const MUSIC={
  oracle:{tempo:68, notes:[196,233,262,311,349,415,466,523], bass:[98,116,131,155]},
  finale:{tempo:58, notes:[110,123,147,165,196,220,247,294], bass:[55,62,73,82]}
 };
-function musicUI(){return '<button class="music-toggle" id="musicToggle" type="button" aria-label="Attiva o disattiva musica">♫ MUSICA</button>'}
-function bindMusicUI(){const b=document.getElementById('musicToggle');if(!b)return;b.textContent=musicOn?'♫ MUSICA ON':'♫ MUSICA OFF';b.onclick=e=>{e.stopPropagation();if(musicOn && audioCtx && audioCtx.state==='suspended'){audioCtx.resume();startMusic();return;}musicOn=!musicOn;if(musicOn){startMusic();}else stopMusic();b.textContent=musicOn?'♫ MUSICA ON':'♫ MUSICA OFF';};}
+function musicUI(){return '<span class="music-toggle" aria-label="Musica attiva">♫ MUSICA ON</span>'}
+function bindMusicUI(){}
 function ensureAudio(){if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume();}
+let musicUnlocked=false;
+function unlockMusic(){if(musicUnlocked)return;musicUnlocked=true;try{ensureAudio();if(musicOn)startMusic()}catch(e){}}
+document.addEventListener('pointerdown',unlockMusic,{capture:true,passive:true});
+document.addEventListener('touchstart',unlockMusic,{capture:true,passive:true});
+document.addEventListener('keydown',unlockMusic,{capture:true});
 function tone(freq,dur,when,type='triangle',gain=.28,gen=musicGeneration){if(!audioCtx||gen!==musicGeneration||!musicBus)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();activeTones.add(o);o.onended=()=>{activeTones.delete(o);try{o.disconnect();g.disconnect()}catch(e){}};o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(gain,when+.025);g.gain.exponentialRampToValueAtTime(.0001,when+dur);o.connect(g).connect(musicBus);o.start(when);o.stop(when+dur+.03)}
 function startMusic(){if(!musicOn)return;ensureAudio();musicGeneration++;const gen=musicGeneration;clearInterval(musicTimer);musicTimer=null;activeTones.forEach(o=>{try{o.stop()}catch(e){}});activeTones.clear();if(musicBus){try{musicBus.gain.cancelScheduledValues(audioCtx.currentTime);musicBus.gain.setValueAtTime(0,audioCtx.currentTime);musicBus.disconnect()}catch(e){}}musicBus=audioCtx.createGain();musicBus.gain.setValueAtTime(1,audioCtx.currentTime);musicBus.connect(audioCtx.destination);musicStep=0;const play=()=>{if(!audioCtx||!musicOn||gen!==musicGeneration)return;const m=MUSIC[musicMode]||MUSIC.ambient;const now=audioCtx.currentTime+.02;const n=m.notes[musicStep%m.notes.length];tone(n,.34,now,'triangle',musicMode==='battle'?.42:.30,gen);if(musicStep%4===0)tone(m.bass[(musicStep/4)%m.bass.length],.72,now,'sine',.22,gen);if(musicMode==='battle'&&musicStep%2===0)tone(m.notes[(musicStep+2)%m.notes.length]/2,.18,now,'square',.18,gen);if(musicMode==='oracle'&&musicStep%4===1)tone(m.notes[(musicStep+4)%m.notes.length]*2,.55,now+.08,'sine',.15,gen);musicStep++;};play();const beat=60/(MUSIC[musicMode]||MUSIC.ambient).tempo;musicTimer=setInterval(play,beat*1000)}
 function stopMusic(){musicGeneration++;clearInterval(musicTimer);musicTimer=null;activeTones.forEach(o=>{try{o.stop()}catch(e){}});activeTones.clear();if(musicBus&&audioCtx){try{const now=audioCtx.currentTime;musicBus.gain.cancelScheduledValues(now);musicBus.gain.setValueAtTime(Math.max(0,musicBus.gain.value||1),now);musicBus.gain.exponentialRampToValueAtTime(.0001,now+.04);setTimeout(()=>{try{musicBus.disconnect()}catch(e){}},80)}catch(e){try{musicBus.disconnect()}catch(e){}}}musicBus=null}
-function musicSet(mode){musicMode=mode;if(!musicOn)return;stopMusic();if(!audioCtx){ensureAudio();startMusic();return;}if(audioCtx.state==='suspended'){audioCtx.resume().then(()=>{if(musicOn)startMusic()}).catch(()=>{});}else{startMusic();}}
+function musicSet(mode){musicMode=mode;if(!musicOn)return;stopMusic();if(!audioCtx){ensureAudio();}if(audioCtx&&audioCtx.state==='suspended'){audioCtx.resume().then(()=>{if(musicOn)startMusic()}).catch(()=>{});}else if(audioCtx){startMusic();}}
 
 (function(){
 'use strict';
