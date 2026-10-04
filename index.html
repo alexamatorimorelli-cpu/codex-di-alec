@@ -31,6 +31,15 @@ button{font:inherit;touch-action:manipulation}
 <script>
 /* --- CODEX MUSIC REMOVED --- */
 (function(){
+'use strict';
+const app=document.getElementById('app');
+const state={rooms:{sword:false,chronicle:false,destiny:false}};
+function esc(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function shell(title,body,extra=''){app.innerHTML=`<div class="page"><main class="codex"><div class="inner"><div class="kicker">Codex di Alec</div><h2>${title}</h2>${body}${extra}</div></main></div>`}
+function gameShell(title,body){app.innerHTML=`<div class="page"><main class="game"><div class="kicker">🏰 Codex di Alec · cronaca interattiva</div><h2>${title}</h2>${body}</main></div>`}
+function home(){shell('Il Codex di Alec',`<p class="quote">CODICE DELLE CRONACHE PERDUTE</p><p>Qui comincia la cronaca di Alec, persona che attraversa i secoli, impugna lame forgiate nel passato e osa entrare in mondi che altri possono soltanto immaginare.</p><div class="btns"><button class="btn gold" id="open">✦ APRI IL CODEX ✦</button></div>`)}
+function folio1(){shell('Foglio I · Le cronache',`<p>Le pagine sono incomplete.</p><p>Si racconta di una persona che conosce la lama, la rievocazione e i mondi in cui una storia non si limita a essere raccontata: si vive.</p><p class="quote">Ma una cronaca non si completa leggendo. Si completa scegliendo.</p><div class="btns"><button class="btn gold" id="toRoutes">CONTINUA LA CRONACA →</button></div>`)}
+function routes(){const done=Object.values(state.rooms).filter(Boolean).length;const locked=done<3;const seal=(on,icon)=>`<span class="seal-mini ${on?'collected':''}" aria-label="${on?'Sigillo raccolto':'Sigillo non ancora raccolto'}">${on?icon:'◇'}</span>`;shell('Foglio II · Le tre vie',`<p>Scegli una via. Puoi affrontarle nell'ordine che preferisci.</p><div class="collection"><b>✦ SIGILLI DELLE CRONACHE ✦</b><div class="seals">${seal(state.rooms.sword,'⚔️')}${seal(state.rooms.chronicle,'📜')}${seal(state.rooms.destiny,'🎲')}</div><p class="tiny">${done}/3 vie completate</p></div><div class="routes"><section class="route"><h3>⚔️ La Sala d'Armi</h3><p>Un duello di riflessi. Colpisci il bersaglio prima che il tempo scada.</p><button class="btn" id="sword">ENTRA NELLA SALA</button></section><section class="route"><h3>📜 La Cronaca del Castello</h3><p>Un'avventura a scelta multipla. Le tue decisioni cambieranno il percorso.</p><button class="btn" id="chronicle">INIZIA LA CRONACA</button></section><section class="route"><h3>🎲 La Prova del Destino</h3><p>Un vero D20. Il dado decide se il destino ti concede il sigillo.</p><button class="btn" id="destiny">LANCIA IL DADO</button></section></div><div class="btns">${locked?`<p class="tiny">Raccogli tutti e tre i sigilli per aprire il Foglio III.</p>`:`<button class="btn gold" id="finals">✦ APRI IL FOGLIO III ✦</button>`}</div>`)}
 function musicUI(){return ''}
 function bindMusicUI(){}
 function musicSet(mode){}
